@@ -1,0 +1,39 @@
+Loaded run: /data/yangyang/bioLLMs/CellViT_Adapter_UNI/log/2025-02-19T193050_UNIAdapteronConicx40LinearPatientOptOverlap
+Loading best model from /data/yangyang/bioLLMs/CellViT_Adapter_UNI/log/2025-02-19T193050_UNIAdapteronConicx40LinearPatientOptOverlap/checkpoints/model_best.pth
+<All keys matched successfully>
+Performing Inference on test set: [1]
+******************** Binary Dataset metrics ********************
+Binary-Cell-Dice-Mean:    0.7881166902737266
+Binary-Cell-Jacard-Mean:  0.7270940600766319
+Tissue-Multiclass-Accuracy: 1.0
+bPQ:                      0.6598942611048149
+bDQ:                      0.8041065123512917
+bSQ:                      0.812026413126212
+mPQ:                      0.54251280315078
+mDQ:                      0.6525880312240812
+mSQ:                      0.7219903017204293
+f1_detection:             0.8468599716063239
+precision_detection:      0.8512828942452816
+recall_detection:         0.8424827708598303
+******************** Tissue metrics ********************
+Tissue        Dice    Jaccard       mPQ       bPQ
+--------  --------  ---------  --------  --------
+colon     0.788117   0.727094  0.542513  0.659894
+******************** Nuclei Type Metrics ********************
+Nuclei Type          DQ        SQ        PQ
+-------------  --------  --------  --------
+neutrophil     0.327241  0.371955  0.250077
+epithelial     0.761537  0.764221  0.59993
+lymphocyte     0.703555  0.80893   0.622797
+plasma         0.422321  0.57295   0.372263
+eosinophil     0.396669  0.3609    0.30681
+connective     0.681293  0.780467  0.566481
+******************** Nuclei Detection Metrics ********************
+Nuclei Type      Precision    Recall        F1
+-------------  -----------  --------  --------
+neutrophil        0.41472   0.381262  0.397288
+epithelial        0.799912  0.807283  0.80358
+lymphocyte        0.723099  0.719111  0.7211
+plasma            0.452524  0.407865  0.429035
+eosinophil        0.521061  0.388824  0.445333
+connective        0.715471  0.696707  0.705965

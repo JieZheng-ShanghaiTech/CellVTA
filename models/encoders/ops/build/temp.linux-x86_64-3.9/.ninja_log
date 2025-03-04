@@ -1,0 +1,4 @@
+# ninja log v5
+0	5082	1735280156915315085	/data/yangyang/bioLLMs/cell_segmentation/ViT-Adapter/detection/ops/build/temp.linux-x86_64-3.9/data/yangyang/bioLLMs/cell_segmentation/ViT-Adapter/detection/ops/src/cpu/ms_deform_attn_cpu.o	47a0ddba6dc4d0c3
+0	16296	1735280168129350623	/data/yangyang/bioLLMs/cell_segmentation/ViT-Adapter/detection/ops/build/temp.linux-x86_64-3.9/data/yangyang/bioLLMs/cell_segmentation/ViT-Adapter/detection/ops/src/vision.o	494e3328c49aad8f
+0	19954	1735280171797362247	/data/yangyang/bioLLMs/cell_segmentation/ViT-Adapter/detection/ops/build/temp.linux-x86_64-3.9/data/yangyang/bioLLMs/cell_segmentation/ViT-Adapter/detection/ops/src/cuda/ms_deform_attn_cuda.o	f299424a58cffc7

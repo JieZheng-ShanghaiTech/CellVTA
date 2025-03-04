@@ -1,0 +1,55 @@
+Loaded run: /data/yangyang/bioLLMs/CellViT_Adapter_UNI/log/2025-01-29T021004_UNIAdapteronPannukeOptCfgSplit3
+Loading best model from /data/yangyang/bioLLMs/CellViT_Adapter_UNI/log/2025-01-29T021004_UNIAdapteronPannukeOptCfgSplit3/checkpoints/model_best.pth
+<All keys matched successfully>
+Performing Inference on test set: [0]
+******************** Binary Dataset metrics ********************
+Binary-Cell-Dice-Mean:    0.8137942722364587
+Binary-Cell-Jacard-Mean:  0.7414216186858524
+Tissue-Multiclass-Accuracy: 0.31137048192771083
+bPQ:                      0.671274617274867
+bDQ:                      0.8035723534073435
+bSQ:                      0.828457981559922
+mPQ:                      0.5121367153406939
+mDQ:                      0.6129608593401678
+mSQ:                      0.7202742985629095
+f1_detection:             0.830741942185078
+precision_detection:      0.8304632587859425
+recall_detection:         0.8310208126858275
+******************** Tissue metrics ********************
+Tissue             Dice    Jaccard       mPQ       bPQ
+-------------  --------  ---------  --------  --------
+adrenal_gland  0.858312   0.767629  0.530993  0.717329
+bile-duct      0.808199   0.753067  0.531248  0.701048
+bladder        0.861976   0.764872  0.615625  0.709222
+breast         0.841952   0.745563  0.524148  0.678352
+cervix         0.778467   0.756991  0.53757   0.711559
+colon          0.749965   0.709217  0.471296  0.59904
+esophagus      0.84044    0.746154  0.559262  0.663385
+headneck       0.658438   0.65468   0.540924  0.680885
+kidney         0.82599    0.75585   0.587098  0.726761
+liver          0.873442   0.789414  0.535231  0.752278
+lung           0.799015   0.730111  0.436699  0.639315
+ovarian        0.85447    0.754745  0.515249  0.653044
+pancreatic     0.858747   0.756701  0.478715  0.669507
+prostate       0.827544   0.739237  0.538026  0.670519
+skin           0.784888   0.705165  0.447631  0.682665
+stomach        0.873971   0.780038  0.448792  0.696536
+testis         0.831019   0.779909  0.487664  0.698575
+thyroid        0.820615   0.750074  0.470277  0.70282
+uterus         0.847127   0.743862  0.603325  0.667072
+******************** Nuclei Type Metrics ********************
+Nuclei Type          DQ        SQ        PQ
+-------------  --------  --------  --------
+Neoplastic     0.684664  0.779139  0.583331
+Inflammatory   0.520333  0.63088   0.445199
+Connective     0.538192  0.689483  0.437401
+Dead           0.312993  0.436809  0.239695
+Epithelial     0.714327  0.777913  0.586735
+******************** Nuclei Detection Metrics ********************
+Nuclei Type      Precision    Recall        F1
+-------------  -----------  --------  --------
+Neoplastic        0.732671  0.695843  0.713782
+Inflammatory      0.582593  0.60536   0.593759
+Connective        0.549602  0.552684  0.551138
+Dead              0.444056  0.474766  0.458898
+Epithelial        0.704393  0.758292  0.73035
