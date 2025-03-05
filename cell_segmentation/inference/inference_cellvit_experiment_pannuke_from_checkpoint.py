@@ -571,7 +571,7 @@ class InferenceCellViT:
         }
 
         # saving
-        with open(str(self.output_dir / f"inference_results_{self.run_conf['logging']['log_comment']}.json"), "w") as outfile:
+        with open(os.path.join(self.output_dir, f"inference_results_{self.run_conf['logging']['log_comment']}.json"), "w") as outfile:
             json.dump(all_metrics, outfile, indent=2)
 
     def inference_step(

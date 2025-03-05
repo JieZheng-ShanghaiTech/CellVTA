@@ -30,7 +30,7 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 
 4. Install torch (these codes are tested under torch 2.0.0 with CUDA 11.8)
 ```bash    
-    pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
 ```
 
 5. Install Deformable Attention
@@ -58,4 +58,7 @@ Download model checkpoints from the `checkpoints` folder [CellVTA-Google-Drive](
     python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --gpu 0  
 
 
+## Citation
+
+XXX
 
