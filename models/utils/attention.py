@@ -2,9 +2,7 @@
 # PyTorch Implementation of Attention Modules
 #
 # Implementation based on: https://github.com/mahmoodlab/CLAM
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
+
 
 from typing import Tuple
 import torch

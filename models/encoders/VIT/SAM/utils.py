@@ -6,10 +6,6 @@
 # LICENSE file in the root directory of this source tree.
 #
 # This file has not been changed by the author of this repository
-#
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
 
 import torch
 import torch.nn as nn

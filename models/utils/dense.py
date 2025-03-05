@@ -5,10 +5,6 @@
 # on computer vision and pattern recognition, pp. 4700-4708. 2017.
 #
 # Code Snippet adapted from HoverNet implementation (https://github.com/vqdang/hover_net)
-#
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
 
 
 import torch

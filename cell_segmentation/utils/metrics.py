@@ -28,10 +28,7 @@
 # Inflammatory PQ: Reports the PQ for the inflammatory class on all tissues.
 # Connective PQ: Reports the PQ for the connective class on all tissues.
 # Dead PQ: Reports the PQ for the dead class on all tissues.
-#
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
+
 
 from typing import List
 import numpy as np

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # Prepare PanNuke Dataset By converting and resorting files
-#
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
+
 
 import inspect
 import os

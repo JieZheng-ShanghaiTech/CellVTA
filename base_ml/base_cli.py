@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 # Base CLI to parse Arguments
-#
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
 
 import argparse
 import logging

@@ -5,10 +5,7 @@
 # and pattern recognition, pp. 770-778. 2016.
 #
 # Code Snippet adapted from HoverNet implementation (https://github.com/vqdang/hover_net)
-#
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
+
 
 
 import torch
