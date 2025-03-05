@@ -10,8 +10,8 @@ logging:
     - "tag1"
     - "tag2"
     - "..."
-  wandb_dir: "/data/yangyang/bioLLMs/CellViT_Adapter_UNI/log"               # Direcotry to store the wandb file. CAREFUL: Directory must exists [str]
-  log_dir: "/data/yangyang/bioLLMs/CellViT_Adapter_UNI/log"                 # Direcotry to store all logging related files and outputs [str]
+  wandb_dir: "/data/yangyang/bioLLMs/CellVTA/logs"               # Direcotry to store the wandb file. CAREFUL: Directory must exists [str]
+  log_dir: "/data/yangyang/bioLLMs/CellVTA/logs"                 # Direcotry to store all logging related files and outputs [str]
   level: "info"                   # Level of logging must be either ["critical", "error", "warning", "info", "debug"] [str]
   log_images:               # If images should be logged to WandB for this run. [bool] [Optional, defaults to False]
   group:                    # WandB group tag [str] [Optional, defaults to None]
@@ -25,7 +25,7 @@ gpu: 0                       # Number of GPU to run experiment on [int]
 # setting paths and dataset
 data:
   dataset: Pannuke                 # Name of dataset, currently supported: PanNuke, Conic. Select your dataset and the script will autoamtically select the corresponding experiment [str]
-  dataset_path: "/data/yangyang/bioLLMs/CellViT/datasets/pannuke_cellvit"            # Path to dataset, compare ./docs/readmes/pannuke.md for further details [str]
+  dataset_path: "/data/yangyang/bioLLMs/CellVTA/datasets/pannuke_cellvit"            # Path to dataset, compare ./docs/readmes/pannuke.md for further details [str]
   train_folds: [0]        # List of fold Numbers to use for training [list[int]]
   # val_split: 0.2               # Percentage of training set that should be used for validation. Either val_split or val_fold must be provided, not both. [float]
   val_folds: [1]               # List of fold Numbers to use for validation [list[int]]

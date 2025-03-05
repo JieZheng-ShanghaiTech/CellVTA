@@ -21,8 +21,8 @@ from timm.layers import PatchEmbed, Mlp, DropPath, AttentionPoolLatent, RmsNorm,
     trunc_normal_, lecun_normal_, resample_patch_embed, resample_abs_pos_embed, use_fused_attn, \
     get_act_layer, get_norm_layer, LayerType
 from torch.nn.init import normal_
-from models.encoders.ViTAdapter.detection.ops.modules import MSDeformAttn
-from models.encoders.ViTAdapter.segmentation.mmseg_custom.models.backbones.adapter_modules import SpatialPriorModule, InteractionBlock, deform_inputs
+from models.ops.modules import MSDeformAttn
+from models.encoders.adapter_modules import SpatialPriorModule, InteractionBlock, deform_inputs
 
 
 

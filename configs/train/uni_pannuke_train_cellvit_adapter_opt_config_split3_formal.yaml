@@ -10,8 +10,8 @@ logging:
     - "tag1"
     - "tag2"
     - "..."
-  wandb_dir: "/data/yangyang/bioLLMs/CellViT_Adapter_UNI/log"               # Direcotry to store the wandb file. CAREFUL: Directory must exists [str]
-  log_dir: "/data/yangyang/bioLLMs/CellViT_Adapter_UNI/log"                 # Direcotry to store all logging related files and outputs [str]
+  wandb_dir: "/data/yangyang/bioLLMs/CellViT_Adapter_UNI/logs"               # Direcotry to store the wandb file. CAREFUL: Directory must exists [str]
+  log_dir: "/data/yangyang/bioLLMs/CellViT_Adapter_UNI/logs"                 # Direcotry to store all logging related files and outputs [str]
   level: "info"                   # Level of logging must be either ["critical", "error", "warning", "info", "debug"] [str]
   log_images:               # If images should be logged to WandB for this run. [bool] [Optional, defaults to False]
   group:                    # WandB group tag [str] [Optional, defaults to None]

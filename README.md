@@ -22,8 +22,9 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 1. Download this repository.
   <!-- `git clone https://github.com/TIO-IKIM/CellViT.git` -->
 
-2. Create a conda environment with Python 3.9.7 version and install conda requirements: `conda env create -f environment.yml`. You can change the environment name by editing the `name` tag in the environment.yaml file.
-This step is necessary, as we need to install `Openslide` with binary files. This is easier with conda. Otherwise, installation from [source](https://openslide.org/api/python/) needs to be performed and packages installed with pi
+2. Create a conda environment with Python 3.9.7 version and install conda requirements: `conda env create -f environment.yml`. 
+
+<!-- You can change the environment name by editing the `name` tag in the environment.yaml file. -->
 
 3. Activate environment: `conda activate cellvta`
 
@@ -33,6 +34,12 @@ This step is necessary, as we need to install `Openslide` with binary files. Thi
 ```
 
 5. Install Deformable Attention
+
+```bash  
+cd models/ops
+sh make.sh
+```
+If you meet any problem when installing Deformable Attention, please refer to the original repository: [Deformable-DETR](https://github.com/fundamentalvision/Deformable-DETR)
 
 
 ## Preparation

@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("/data/yangyang/bioLLMs/CellViT_Adapter_UNI/")
+sys.path.append("/data/yangyang/bioLLMs/CellVTA")
 
 import torch
 from models.segmentation.cell_segmentation.cellvit import CellViTUNIAdapter
@@ -26,6 +26,6 @@ model = CellViTUNIAdapter(
                         deform_ratio=0.5, 
                         add_vit_feature=True)
 
-# model = model.to("cuda:0")
+model = model.to("cuda:0")
 
-# x = model(a)
+x = model(a)

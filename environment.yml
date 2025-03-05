@@ -59,3 +59,4 @@ dependencies:
     - black==23.1.0
     - genbadge==1.1.0
     - histolab==0.6.0
+    - timm==1.0.15

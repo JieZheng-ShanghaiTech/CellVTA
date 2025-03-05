@@ -20,7 +20,7 @@ import torch.nn as nn
 import loralib as lora
 
 from cell_segmentation.utils.post_proc_cellvit import DetectionCellPostProcessor
-from models.encoders.ViTAdapter.segmentation.mmseg_custom.models.backbones.adapter_modules import SpatialPriorModule, InteractionBlock, deform_inputs
+from models.encoders.adapter_modules import SpatialPriorModule, InteractionBlock, deform_inputs
 
 from models.segmentation.cell_segmentation.utils import Conv2DBlock, Deconv2DBlock, ViTCellViT, ViTCellViTDeit, ViTCellViTDeitAdapter
 
