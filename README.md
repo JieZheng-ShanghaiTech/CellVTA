@@ -54,8 +54,8 @@ Download model checkpoints from the `checkpoints` folder [CellVTA-Google-Drive](
 ### Train
     python run_cellvit.py --config [config-file-path]
 
-<!-- ### Inference
-    python inference/inference_cellvit_experiment_pannuke.py --run_dir [log_folder] --checkpoint_name [checkpoint_path] --gpu 0   -->
+### Inference
+    python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --gpu 0  
 
 
 
