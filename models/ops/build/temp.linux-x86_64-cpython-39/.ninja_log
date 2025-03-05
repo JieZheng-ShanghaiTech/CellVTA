@@ -1,4 +1,0 @@
-# ninja log v5
-0	5007	1741156087934287046	/data/yangyang/bioLLMs/CellVTA/models/ops/build/temp.linux-x86_64-cpython-39/data/yangyang/bioLLMs/CellVTA/models/ops/src/cpu/ms_deform_attn_cpu.o	aaaecafc8dd290c7
-0	16042	1741156098969317202	/data/yangyang/bioLLMs/CellVTA/models/ops/build/temp.linux-x86_64-cpython-39/data/yangyang/bioLLMs/CellVTA/models/ops/src/vision.o	95127eff59310c6d
-0	19040	1741156101977325422	/data/yangyang/bioLLMs/CellVTA/models/ops/build/temp.linux-x86_64-cpython-39/data/yangyang/bioLLMs/CellVTA/models/ops/src/cuda/ms_deform_attn_cuda.o	bbd24b125ffd0804
