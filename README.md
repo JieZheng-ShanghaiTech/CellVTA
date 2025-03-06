@@ -5,7 +5,7 @@ This is the official implementation of CellVTA.
 
 To reproduce the result in the paper, the processed data and model checkpoint can be downloaded at: [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
 
-
+<!-- 
 
 ## Abstract
 
@@ -16,7 +16,7 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
   <img src="./docs/figures/cellvta_structure.png"/>
 </p>
 
-
+ -->
 
 ## Installation
 1. Download this repository.
@@ -78,7 +78,7 @@ python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --confi
 
 To reproduce the results on conic which needs upsamling inference, run `inference_cellvit_upscale.py` as below:
 ```bash
-python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+python inference/inference_cellvit_upscale.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
 ```
 
 
