@@ -8,7 +8,7 @@ dependencies:
   - openslide=3.4.1=h7773abc_6
   - pip=23.0=pyhd8ed1ab_0
   - python-javabridge
-  - gcc
+  - gcc=11.4.0
 
   - pip:
     - mako==1.2.4
