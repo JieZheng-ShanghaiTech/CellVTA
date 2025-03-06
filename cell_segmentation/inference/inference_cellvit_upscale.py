@@ -4,9 +4,7 @@
 #
 # Aim is to calculate metrics as defined for the Lizard dataset
 #
-# @ Fabian Hörst, fabian.hoerst@uk-essen.de
-# Institute for Artifical Intelligence in Medicine,
-# University Medicine Essen
+
 
 COLOR_DICT = {
     1: [255, 0, 0],
@@ -104,7 +102,7 @@ pandarallel.initialize(progress_bar=False, nb_workers=12)
 class InferenceCellViTUpscale:
     def __init__(
         self,
-        conf_path: str,
+        config_path: str,
         outdir: Union[Path, str],
         gpu: int,
         magnification: int = 40,
@@ -116,7 +114,7 @@ class InferenceCellViTUpscale:
             gpu (int): CUDA GPU id to use
             magnification (int, optional): Dataset magnification. Defaults to 40.
         """
-        self.conf_path = Path(conf_path)
+        self.config_path = Path(config_path)
         self.device = f"cuda:{gpu}"
         self.magnification = magnification
         self.outdir = Path(outdir)
@@ -154,7 +152,7 @@ class InferenceCellViTUpscale:
         Be careful with loading and usage, since original None values in the run configuration are not stored when dumped to yaml file.
         If you want to check if a key is not defined, first check if the key does exists in the dict.
         """
-        with open(self.conf_path, "r") as run_config_file:
+        with open(self.config_path, "r") as run_config_file:
             yaml_config = yaml.safe_load(run_config_file)
             self.run_conf = dict(yaml_config)
         assert("test_folds" in self.run_conf["data"])
@@ -543,12 +541,7 @@ class InferenceCellViTUpscale:
     def inference_step(
         self,
         model: Union[
-            CellViT,
-            CellViTShared,
-            CellViT256,
-            CellViT256Shared,
-            CellViTSAM,
-            CellViTSAMShared,
+            CellViT
         ],
         batch: tuple,
         generate_plots: bool = False,
@@ -1750,7 +1743,7 @@ if __name__ == "__main__":
     inf = InferenceCellViTUpscale(
         outdir=configuration["output_dir"],
         gpu=configuration["gpu"],
-        conf_path=configuration["config"],
+        config_path=configuration["config"],
         magnification=40,
     )
     inf.run_patch_inference(generate_plots=configuration["plots"])
