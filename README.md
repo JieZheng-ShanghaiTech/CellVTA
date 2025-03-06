@@ -6,7 +6,7 @@ This is the official implementation of CellVTA.
 To reproduce the result in the paper, the processed data and model checkpoint can be downloaded at: [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
 
 
-<!-- 
+
 ## Abstract
 
 Cell instance segmentation is a fundamental task in digital pathology with broad clinical applications.  Recently, vision foundation models, which are predominantly based on Vision Transformers (ViTs), have achieved remarkable success in pathology image analysis. However, their improvements in cell instance segmentation remain limited. A key challenge arises from the tokenization process in ViTs, which aggressively reduces the spatial resolution of input images, leading to suboptimal segmentation quality, especially for small and densely packed cells. To address this problem, we propose CellVTA (Cell Vision Transformer with Adapter), a novel method that improves the performance of vision foundation models for cell instance segmentation by incorporating a CNN-based adapter module. This adapter extracts high-resolution spatial information from input images and injects it into the ViT through a cross-attention mechanism. Our method preserves the core architecture of ViT, ensuring seamless integration with pretrained foundation models. Extensive experiments show that CellVTA achieves 0.538 mPQ on the CoNIC dataset and 0.506 mPQ on the PanNuke dataset, which significantly outperforms the state-of-the-art cell segmentation methods. Ablation studies confirm the superiority of our approach over other fine-tuning strategies, including decoder-only fine-tuning and full fine-tuning. 
@@ -14,7 +14,7 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 ## Method
 <p align="center">
   <img src="./docs/figures/cellvta_structure.png"/>
-</p> -->
+</p>
 
 
 
@@ -49,7 +49,7 @@ Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive]
 ### Pretrained Model
 Download model checkpoints in the paper from the `checkpoints` folder [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
 
-If you want to train the model by yourself, you need to get the pretrained weights of UNI. You need to apply it in [UNI](https://huggingface.co/MahmoodLab/UNI). 
+If you want to train the model by yourself, you need to get the pretrained weights of UNI. You can access it from [UNI](https://huggingface.co/MahmoodLab/UNI). 
 
 
 ### Configuration file
@@ -58,11 +58,14 @@ Examples configuration files are available at `configurations` in [CellVTA-Googl
 
 ## Usage
 ### Train
-    python run_cellvit.py --config [config-file-path]
+```bash
+python run_cellvit.py --config [config-file-path]
+```
 
 ### Inference
-    python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
-
+```bash
+python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
+```
 
 ### Reproduction
 
