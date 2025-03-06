@@ -1,0 +1,1530 @@
+2025-02-19 19:30:57,944 [INFO] - Cuda devices: [<torch.cuda.device object at 0x7a8e69d80400>, <torch.cuda.device object at 0x7a8e69d80130>, <torch.cuda.device object at 0x7a8e69d80070>]
+2025-02-19 19:30:57,944 [INFO] - Using GPU: cuda:0
+2025-02-19 19:30:57,944 [INFO] - Using device: cuda:0
+2025-02-19 19:30:57,946 [INFO] - Loss functions:
+2025-02-19 19:30:57,946 [INFO] - {'nuclei_binary_map': {'focaltverskyloss': {'loss_fn': FocalTverskyLoss(), 'weight': 1}, 'dice': {'loss_fn': DiceLoss(), 'weight': 1}}, 'hv_map': {'mse': {'loss_fn': MSELossMaps(), 'weight': 2.5}, 'msge': {'loss_fn': MSGELossMaps(), 'weight': 8}}, 'nuclei_type_map': {'bce': {'loss_fn': XentropyLoss(), 'weight': 0.5}, 'dice': {'loss_fn': DiceLoss(), 'weight': 0.2}, 'mcfocaltverskyloss': {'loss_fn': MCFocalTverskyLoss(), 'weight': 0.5}}, 'regression_map': {'mse': {'loss_fn': MSELossMaps(), 'weight': 1}}}
+2025-02-19 19:31:07,734 [INFO] - Loaded CellViT-UNI model
+2025-02-19 19:31:07,738 [INFO] - 
+Model: CellViTUNIAdapter(
+  (encoder): UNIAdapterEncoder(
+    (spm): SpatialPriorModule(
+      (stem): Sequential(
+        (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (4): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU(inplace=True)
+        (6): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (7): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (8): ReLU(inplace=True)
+        (9): Conv2d(64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      )
+      (conv2): Sequential(
+        (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (4): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU(inplace=True)
+      )
+      (conv3): Sequential(
+        (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (4): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU(inplace=True)
+      )
+      (conv4): Sequential(
+        (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (4): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU(inplace=True)
+      )
+      (fc1): Conv2d(64, 1024, kernel_size=(1, 1), stride=(1, 1))
+      (fc2): Conv2d(128, 1024, kernel_size=(1, 1), stride=(1, 1))
+      (fc3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1))
+      (fc4): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1))
+    )
+    (patch_embed): PatchEmbed(
+      (proj): Conv2d(3, 1024, kernel_size=(16, 16), stride=(16, 16))
+      (norm): Identity()
+    )
+    (pos_drop): Dropout(p=0.0, inplace=False)
+    (patch_drop): Identity()
+    (norm_pre): Identity()
+    (blocks): Sequential(
+      (0): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): Identity()
+      )
+      (1): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.017)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.017)
+      )
+      (2): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.035)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.035)
+      )
+      (3): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.052)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.052)
+      )
+      (4): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.070)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.070)
+      )
+      (5): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.087)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.087)
+      )
+      (6): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.104)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.104)
+      )
+      (7): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.122)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.122)
+      )
+      (8): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.139)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.139)
+      )
+      (9): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.157)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.157)
+      )
+      (10): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.174)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.174)
+      )
+      (11): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.191)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.191)
+      )
+      (12): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.209)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.209)
+      )
+      (13): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.226)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.226)
+      )
+      (14): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.243)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.243)
+      )
+      (15): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.261)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.261)
+      )
+      (16): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.278)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.278)
+      )
+      (17): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.296)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.296)
+      )
+      (18): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.313)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.313)
+      )
+      (19): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.330)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.330)
+      )
+      (20): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.348)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.348)
+      )
+      (21): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.365)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.365)
+      )
+      (22): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.383)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.383)
+      )
+      (23): Block(
+        (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=1024, out_features=1024, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): LayerScale()
+        (drop_path1): DropPath(drop_prob=0.400)
+        (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): LayerScale()
+        (drop_path2): DropPath(drop_prob=0.400)
+      )
+    )
+    (interactions): Sequential(
+      (0): InteractionBlock(
+        (injector): Injector(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=192, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=96, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+        )
+        (extractor): Extractor(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=64, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=32, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (ffn): ConvFFN(
+            (fc1): Linear(in_features=1024, out_features=256, bias=True)
+            (dwconv): DWConv(
+              (dwconv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=256, out_features=1024, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+          (ffn_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.400)
+        )
+      )
+      (1): InteractionBlock(
+        (injector): Injector(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=192, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=96, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+        )
+        (extractor): Extractor(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=64, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=32, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (ffn): ConvFFN(
+            (fc1): Linear(in_features=1024, out_features=256, bias=True)
+            (dwconv): DWConv(
+              (dwconv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=256, out_features=1024, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+          (ffn_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.400)
+        )
+      )
+      (2): InteractionBlock(
+        (injector): Injector(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=192, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=96, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+        )
+        (extractor): Extractor(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=64, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=32, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (ffn): ConvFFN(
+            (fc1): Linear(in_features=1024, out_features=256, bias=True)
+            (dwconv): DWConv(
+              (dwconv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=256, out_features=1024, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+          (ffn_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.400)
+        )
+      )
+      (3): InteractionBlock(
+        (injector): Injector(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=192, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=96, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+        )
+        (extractor): Extractor(
+          (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (attn): MSDeformAttn(
+            (sampling_offsets): Linear(in_features=1024, out_features=64, bias=True)
+            (attention_weights): Linear(in_features=1024, out_features=32, bias=True)
+            (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+            (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (ffn): ConvFFN(
+            (fc1): Linear(in_features=1024, out_features=256, bias=True)
+            (dwconv): DWConv(
+              (dwconv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=256, out_features=1024, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+          (ffn_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.400)
+        )
+        (extra_extractors): Sequential(
+          (0): Extractor(
+            (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+            (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+            (attn): MSDeformAttn(
+              (sampling_offsets): Linear(in_features=1024, out_features=64, bias=True)
+              (attention_weights): Linear(in_features=1024, out_features=32, bias=True)
+              (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+              (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+            )
+            (ffn): ConvFFN(
+              (fc1): Linear(in_features=1024, out_features=256, bias=True)
+              (dwconv): DWConv(
+                (dwconv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+              )
+              (act): GELU(approximate='none')
+              (fc2): Linear(in_features=256, out_features=1024, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (ffn_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+            (drop_path): DropPath(drop_prob=0.400)
+          )
+          (1): Extractor(
+            (query_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+            (feat_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+            (attn): MSDeformAttn(
+              (sampling_offsets): Linear(in_features=1024, out_features=64, bias=True)
+              (attention_weights): Linear(in_features=1024, out_features=32, bias=True)
+              (value_proj): Linear(in_features=1024, out_features=512, bias=True)
+              (output_proj): Linear(in_features=512, out_features=1024, bias=True)
+            )
+            (ffn): ConvFFN(
+              (fc1): Linear(in_features=1024, out_features=256, bias=True)
+              (dwconv): DWConv(
+                (dwconv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+              )
+              (act): GELU(approximate='none')
+              (fc2): Linear(in_features=256, out_features=1024, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (ffn_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+            (drop_path): DropPath(drop_prob=0.400)
+          )
+        )
+      )
+    )
+    (norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+    (up): ConvTranspose2d(1024, 1024, kernel_size=(2, 2), stride=(2, 2))
+    (norm1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (norm2): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (norm3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (norm4): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (fc_norm): Identity()
+    (head_drop): Dropout(p=0.0, inplace=False)
+    (head): Linear(in_features=1024, out_features=1, bias=True)
+  )
+  (decoder0): Sequential(
+    (0): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+    (1): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (decoder1): Sequential(
+    (0): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(1024, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+    (1): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (decoder2): Sequential(
+    (0): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(1024, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+    (1): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (decoder3): Sequential(
+    (0): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(1024, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+    (1): Conv2DBlock(
+      (block): Sequential(
+        (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Dropout(p=0, inplace=False)
+      )
+    )
+  )
+  (nuclei_binary_map_decoder): Sequential(
+    (bottleneck_upsampler): Sequential(
+      (0): Deconv2DBlock(
+        (block): Sequential(
+          (0): ConvTranspose2d(1024, 512, kernel_size=(2, 2), stride=(2, 2))
+          (1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Dropout(p=0, inplace=False)
+        )
+      )
+    )
+    (decoder3_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(1024, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (3): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder2_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): ConvTranspose2d(256, 128, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder1_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): ConvTranspose2d(128, 64, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder0_header): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): Conv2d(64, 2, kernel_size=(1, 1), stride=(1, 1))
+    )
+  )
+  (hv_map_decoder): Sequential(
+    (bottleneck_upsampler): Sequential(
+      (0): Deconv2DBlock(
+        (block): Sequential(
+          (0): ConvTranspose2d(1024, 512, kernel_size=(2, 2), stride=(2, 2))
+          (1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Dropout(p=0, inplace=False)
+        )
+      )
+    )
+    (decoder3_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(1024, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (3): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder2_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): ConvTranspose2d(256, 128, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder1_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): ConvTranspose2d(128, 64, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder0_header): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): Conv2d(64, 2, kernel_size=(1, 1), stride=(1, 1))
+    )
+  )
+  (nuclei_type_maps_decoder): Sequential(
+    (bottleneck_upsampler): Sequential(
+      (0): Deconv2DBlock(
+        (block): Sequential(
+          (0): ConvTranspose2d(1024, 512, kernel_size=(2, 2), stride=(2, 2))
+          (1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (3): ReLU(inplace=True)
+          (4): Dropout(p=0, inplace=False)
+        )
+      )
+    )
+    (decoder3_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(1024, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (3): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder2_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): ConvTranspose2d(256, 128, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder1_upsampler): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): ConvTranspose2d(128, 64, kernel_size=(2, 2), stride=(2, 2))
+    )
+    (decoder0_header): Sequential(
+      (0): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): Conv2DBlock(
+        (block): Sequential(
+          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+          (3): Dropout(p=0, inplace=False)
+        )
+      )
+      (2): Conv2d(64, 7, kernel_size=(1, 1), stride=(1, 1))
+    )
+  )
+)
+2025-02-19 19:31:08,846 [INFO] - 
+=========================================================================================================
+Layer (type:depth-idx)                                  Output Shape              Param #
+=========================================================================================================
+CellViTUNIAdapter                                       [1, 7, 256, 256]          --
+├─UNIAdapterEncoder: 1-1                                [1, 1]                    --
+│    └─SpatialPriorModule: 2-1                          [1, 1024, 128, 128]       --
+│    │    └─Sequential: 3-1                             [1, 64, 128, 128]         112,704
+│    │    └─Sequential: 3-2                             [1, 128, 64, 64]          110,976
+│    │    └─Sequential: 3-3                             [1, 256, 32, 32]          443,136
+│    │    └─Sequential: 3-4                             [1, 256, 16, 16]          1,180,672
+│    │    └─Conv2d: 3-5                                 [1, 1024, 128, 128]       66,560
+│    │    └─Conv2d: 3-6                                 [1, 1024, 64, 64]         132,096
+│    │    └─Conv2d: 3-7                                 [1, 1024, 32, 32]         263,168
+│    │    └─Conv2d: 3-8                                 [1, 1024, 16, 16]         263,168
+│    └─PatchEmbed: 2-2                                  [1, 16, 16, 1024]         --
+│    │    └─Conv2d: 3-9                                 [1, 1024, 16, 16]         (787,456)
+│    │    └─Identity: 3-10                              [1, 16, 16, 1024]         --
+│    └─Dropout: 2-3                                     [1, 257, 1024]            --
+│    └─Identity: 2-4                                    [1, 257, 1024]            --
+│    └─Identity: 2-5                                    [1, 257, 1024]            --
+│    └─Sequential: 2-14                                 --                        (recursive)
+│    │    └─InteractionBlock: 3-11                      [1, 257, 1024]            3,033,216
+│    └─Sequential: 2-13                                 --                        (recursive)
+│    │    └─Block: 3-12                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-13                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-14                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-15                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-16                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-17                                 [1, 256, 1024]            (12,598,272)
+│    └─Sequential: 2-14                                 --                        (recursive)
+│    │    └─InteractionBlock: 3-18                      --                        (recursive)
+│    │    └─InteractionBlock: 3-19                      [1, 257, 1024]            3,033,216
+│    └─Sequential: 2-13                                 --                        (recursive)
+│    │    └─Block: 3-20                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-21                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-22                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-23                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-24                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-25                                 [1, 256, 1024]            (12,598,272)
+│    └─Sequential: 2-14                                 --                        (recursive)
+│    │    └─InteractionBlock: 3-26                      --                        (recursive)
+│    │    └─InteractionBlock: 3-27                      [1, 257, 1024]            3,033,216
+│    └─Sequential: 2-13                                 --                        (recursive)
+│    │    └─Block: 3-28                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-29                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-30                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-31                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-32                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-33                                 [1, 256, 1024]            (12,598,272)
+│    └─Sequential: 2-14                                 --                        (recursive)
+│    │    └─InteractionBlock: 3-34                      --                        (recursive)
+│    │    └─InteractionBlock: 3-35                      [1, 257, 1024]            6,398,784
+│    └─Sequential: 2-13                                 --                        (recursive)
+│    │    └─Block: 3-36                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-37                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-38                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-39                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-40                                 [1, 256, 1024]            (12,598,272)
+│    │    └─Block: 3-41                                 [1, 256, 1024]            (12,598,272)
+│    └─Sequential: 2-14                                 --                        (recursive)
+│    │    └─InteractionBlock: 3-42                      --                        (recursive)
+│    └─LayerNorm: 2-15                                  [1, 257, 1024]            2,048
+│    └─ConvTranspose2d: 2-16                            [1, 1024, 128, 128]       4,195,328
+│    └─BatchNorm2d: 2-17                                [1, 1024, 128, 128]       2,048
+│    └─BatchNorm2d: 2-18                                [1, 1024, 64, 64]         2,048
+│    └─BatchNorm2d: 2-19                                [1, 1024, 32, 32]         2,048
+│    └─BatchNorm2d: 2-20                                [1, 1024, 16, 16]         2,048
+│    └─Identity: 2-21                                   [1, 1024]                 --
+│    └─Dropout: 2-22                                    [1, 1024]                 --
+│    └─Linear: 2-23                                     [1, 1]                    1,025
+├─Sequential: 1-10                                      --                        (recursive)
+│    └─Sequential: 2-24                                 [1, 512, 32, 32]          --
+│    │    └─Deconv2DBlock: 3-43                         [1, 512, 32, 32]          4,458,496
+├─Sequential: 1-3                                       [1, 512, 32, 32]          --
+│    └─Conv2DBlock: 2-25                                [1, 512, 32, 32]          --
+│    │    └─Sequential: 3-44                            [1, 512, 32, 32]          4,720,128
+│    └─Conv2DBlock: 2-26                                [1, 512, 32, 32]          --
+│    │    └─Sequential: 3-45                            [1, 512, 32, 32]          2,360,832
+├─Sequential: 1-10                                      --                        (recursive)
+│    └─Sequential: 2-27                                 [1, 256, 64, 64]          --
+│    │    └─Conv2DBlock: 3-46                           [1, 512, 32, 32]          4,720,128
+│    │    └─Conv2DBlock: 3-47                           [1, 512, 32, 32]          2,360,832
+│    │    └─Conv2DBlock: 3-48                           [1, 512, 32, 32]          2,360,832
+│    │    └─ConvTranspose2d: 3-49                       [1, 256, 64, 64]          524,544
+├─Sequential: 1-5                                       [1, 256, 64, 64]          --
+│    └─Conv2DBlock: 2-28                                [1, 256, 64, 64]          --
+│    │    └─Sequential: 3-50                            [1, 256, 64, 64]          2,360,064
+│    └─Conv2DBlock: 2-29                                [1, 256, 64, 64]          --
+│    │    └─Sequential: 3-51                            [1, 256, 64, 64]          590,592
+├─Sequential: 1-10                                      --                        (recursive)
+│    └─Sequential: 2-30                                 [1, 128, 128, 128]        --
+│    │    └─Conv2DBlock: 3-52                           [1, 256, 64, 64]          1,180,416
+│    │    └─Conv2DBlock: 3-53                           [1, 256, 64, 64]          590,592
+│    │    └─ConvTranspose2d: 3-54                       [1, 128, 128, 128]        131,200
+├─Sequential: 1-7                                       [1, 128, 128, 128]        --
+│    └─Conv2DBlock: 2-31                                [1, 128, 128, 128]        --
+│    │    └─Sequential: 3-55                            [1, 128, 128, 128]        1,180,032
+│    └─Conv2DBlock: 2-32                                [1, 128, 128, 128]        --
+│    │    └─Sequential: 3-56                            [1, 128, 128, 128]        147,840
+├─Sequential: 1-10                                      --                        (recursive)
+│    └─Sequential: 2-33                                 [1, 64, 256, 256]         --
+│    │    └─Conv2DBlock: 3-57                           [1, 128, 128, 128]        295,296
+│    │    └─Conv2DBlock: 3-58                           [1, 128, 128, 128]        147,840
+│    │    └─ConvTranspose2d: 3-59                       [1, 64, 256, 256]         32,832
+├─Sequential: 1-9                                       [1, 64, 256, 256]         --
+│    └─Conv2DBlock: 2-34                                [1, 32, 256, 256]         --
+│    │    └─Sequential: 3-60                            [1, 32, 256, 256]         960
+│    └─Conv2DBlock: 2-35                                [1, 64, 256, 256]         --
+│    │    └─Sequential: 3-61                            [1, 64, 256, 256]         18,624
+├─Sequential: 1-10                                      --                        (recursive)
+│    └─Sequential: 2-36                                 [1, 2, 256, 256]          --
+│    │    └─Conv2DBlock: 3-62                           [1, 64, 256, 256]         73,920
+│    │    └─Conv2DBlock: 3-63                           [1, 64, 256, 256]         37,056
+│    │    └─Conv2d: 3-64                                [1, 2, 256, 256]          130
+├─Sequential: 1-19                                      --                        (recursive)
+│    └─Sequential: 2-37                                 [1, 512, 32, 32]          --
+│    │    └─Deconv2DBlock: 3-65                         [1, 512, 32, 32]          4,458,496
+├─Sequential: 1-12                                      [1, 512, 32, 32]          (recursive)
+│    └─Conv2DBlock: 2-38                                [1, 512, 32, 32]          (recursive)
+│    │    └─Sequential: 3-66                            [1, 512, 32, 32]          (recursive)
+│    └─Conv2DBlock: 2-39                                [1, 512, 32, 32]          (recursive)
+│    │    └─Sequential: 3-67                            [1, 512, 32, 32]          (recursive)
+├─Sequential: 1-19                                      --                        (recursive)
+│    └─Sequential: 2-40                                 [1, 256, 64, 64]          --
+│    │    └─Conv2DBlock: 3-68                           [1, 512, 32, 32]          4,720,128
+│    │    └─Conv2DBlock: 3-69                           [1, 512, 32, 32]          2,360,832
+│    │    └─Conv2DBlock: 3-70                           [1, 512, 32, 32]          2,360,832
+│    │    └─ConvTranspose2d: 3-71                       [1, 256, 64, 64]          524,544
+├─Sequential: 1-14                                      [1, 256, 64, 64]          (recursive)
+│    └─Conv2DBlock: 2-41                                [1, 256, 64, 64]          (recursive)
+│    │    └─Sequential: 3-72                            [1, 256, 64, 64]          (recursive)
+│    └─Conv2DBlock: 2-42                                [1, 256, 64, 64]          (recursive)
+│    │    └─Sequential: 3-73                            [1, 256, 64, 64]          (recursive)
+├─Sequential: 1-19                                      --                        (recursive)
+│    └─Sequential: 2-43                                 [1, 128, 128, 128]        --
+│    │    └─Conv2DBlock: 3-74                           [1, 256, 64, 64]          1,180,416
+│    │    └─Conv2DBlock: 3-75                           [1, 256, 64, 64]          590,592
+│    │    └─ConvTranspose2d: 3-76                       [1, 128, 128, 128]        131,200
+├─Sequential: 1-16                                      [1, 128, 128, 128]        (recursive)
+│    └─Conv2DBlock: 2-44                                [1, 128, 128, 128]        (recursive)
+│    │    └─Sequential: 3-77                            [1, 128, 128, 128]        (recursive)
+│    └─Conv2DBlock: 2-45                                [1, 128, 128, 128]        (recursive)
+│    │    └─Sequential: 3-78                            [1, 128, 128, 128]        (recursive)
+├─Sequential: 1-19                                      --                        (recursive)
+│    └─Sequential: 2-46                                 [1, 64, 256, 256]         --
+│    │    └─Conv2DBlock: 3-79                           [1, 128, 128, 128]        295,296
+│    │    └─Conv2DBlock: 3-80                           [1, 128, 128, 128]        147,840
+│    │    └─ConvTranspose2d: 3-81                       [1, 64, 256, 256]         32,832
+├─Sequential: 1-18                                      [1, 64, 256, 256]         (recursive)
+│    └─Conv2DBlock: 2-47                                [1, 32, 256, 256]         (recursive)
+│    │    └─Sequential: 3-82                            [1, 32, 256, 256]         (recursive)
+│    └─Conv2DBlock: 2-48                                [1, 64, 256, 256]         (recursive)
+│    │    └─Sequential: 3-83                            [1, 64, 256, 256]         (recursive)
+├─Sequential: 1-19                                      --                        (recursive)
+│    └─Sequential: 2-49                                 [1, 2, 256, 256]          --
+│    │    └─Conv2DBlock: 3-84                           [1, 64, 256, 256]         73,920
+│    │    └─Conv2DBlock: 3-85                           [1, 64, 256, 256]         37,056
+│    │    └─Conv2d: 3-86                                [1, 2, 256, 256]          130
+├─Sequential: 1-28                                      --                        (recursive)
+│    └─Sequential: 2-50                                 [1, 512, 32, 32]          --
+│    │    └─Deconv2DBlock: 3-87                         [1, 512, 32, 32]          4,458,496
+├─Sequential: 1-21                                      [1, 512, 32, 32]          (recursive)
+│    └─Conv2DBlock: 2-51                                [1, 512, 32, 32]          (recursive)
+│    │    └─Sequential: 3-88                            [1, 512, 32, 32]          (recursive)
+│    └─Conv2DBlock: 2-52                                [1, 512, 32, 32]          (recursive)
+│    │    └─Sequential: 3-89                            [1, 512, 32, 32]          (recursive)
+├─Sequential: 1-28                                      --                        (recursive)
+│    └─Sequential: 2-53                                 [1, 256, 64, 64]          --
+│    │    └─Conv2DBlock: 3-90                           [1, 512, 32, 32]          4,720,128
+│    │    └─Conv2DBlock: 3-91                           [1, 512, 32, 32]          2,360,832
+│    │    └─Conv2DBlock: 3-92                           [1, 512, 32, 32]          2,360,832
+│    │    └─ConvTranspose2d: 3-93                       [1, 256, 64, 64]          524,544
+├─Sequential: 1-23                                      [1, 256, 64, 64]          (recursive)
+│    └─Conv2DBlock: 2-54                                [1, 256, 64, 64]          (recursive)
+│    │    └─Sequential: 3-94                            [1, 256, 64, 64]          (recursive)
+│    └─Conv2DBlock: 2-55                                [1, 256, 64, 64]          (recursive)
+│    │    └─Sequential: 3-95                            [1, 256, 64, 64]          (recursive)
+├─Sequential: 1-28                                      --                        (recursive)
+│    └─Sequential: 2-56                                 [1, 128, 128, 128]        --
+│    │    └─Conv2DBlock: 3-96                           [1, 256, 64, 64]          1,180,416
+│    │    └─Conv2DBlock: 3-97                           [1, 256, 64, 64]          590,592
+│    │    └─ConvTranspose2d: 3-98                       [1, 128, 128, 128]        131,200
+├─Sequential: 1-25                                      [1, 128, 128, 128]        (recursive)
+│    └─Conv2DBlock: 2-57                                [1, 128, 128, 128]        (recursive)
+│    │    └─Sequential: 3-99                            [1, 128, 128, 128]        (recursive)
+│    └─Conv2DBlock: 2-58                                [1, 128, 128, 128]        (recursive)
+│    │    └─Sequential: 3-100                           [1, 128, 128, 128]        (recursive)
+├─Sequential: 1-28                                      --                        (recursive)
+│    └─Sequential: 2-59                                 [1, 64, 256, 256]         --
+│    │    └─Conv2DBlock: 3-101                          [1, 128, 128, 128]        295,296
+│    │    └─Conv2DBlock: 3-102                          [1, 128, 128, 128]        147,840
+│    │    └─ConvTranspose2d: 3-103                      [1, 64, 256, 256]         32,832
+├─Sequential: 1-27                                      [1, 64, 256, 256]         (recursive)
+│    └─Conv2DBlock: 2-60                                [1, 32, 256, 256]         (recursive)
+│    │    └─Sequential: 3-104                           [1, 32, 256, 256]         (recursive)
+│    └─Conv2DBlock: 2-61                                [1, 64, 256, 256]         (recursive)
+│    │    └─Sequential: 3-105                           [1, 64, 256, 256]         (recursive)
+├─Sequential: 1-28                                      --                        (recursive)
+│    └─Sequential: 2-62                                 [1, 7, 256, 256]          --
+│    │    └─Conv2DBlock: 3-106                          [1, 64, 256, 256]         73,920
+│    │    └─Conv2DBlock: 3-107                          [1, 64, 256, 256]         37,056
+│    │    └─Conv2d: 3-108                               [1, 7, 256, 256]          455
+=========================================================================================================
+Total params: 397,641,932
+Trainable params: 94,495,948
+Non-trainable params: 303,145,984
+Total mult-adds (G): 333.83
+=========================================================================================================
+Input size (MB): 0.79
+Forward/backward pass size (MB): 4572.19
+Params size (MB): 1550.16
+Estimated Total Size (MB): 6123.14
+=========================================================================================================
+2025-02-19 19:31:08,853 [INFO] - Loaded AdamW Optimizer with following hyperparameters:
+2025-02-19 19:31:08,854 [INFO] - {'betas': [0.85, 0.95], 'lr': 0.0003, 'weight_decay': 0.0001}
+2025-02-19 19:31:08,854 [INFO] - Using early stopping with a range of 50 and maximize strategy
+2025-02-19 19:31:58,289 [INFO] - Using RandomSampler
+2025-02-19 19:31:58,290 [INFO] - Instantiate Trainer
+2025-02-19 19:31:58,290 [INFO] - Calling Trainer Fit
+2025-02-19 19:31:58,290 [INFO] - Starting training, total number of epochs: 50
+2025-02-19 19:31:58,290 [INFO] - Epoch: 1/50
+2025-02-19 20:30:43,084 [INFO] - Training epoch stats:     Loss: 7.6692 - Binary-Cell-Dice: 0.7117 - Binary-Cell-Jacard: 0.6004 - Tissue-MC-Acc.: 1.0000
+2025-02-19 20:30:45,717 [INFO] - Epoch: 2/50
+2025-02-19 21:25:39,833 [INFO] - Training epoch stats:     Loss: 7.1037 - Binary-Cell-Dice: 0.7375 - Binary-Cell-Jacard: 0.6355 - Tissue-MC-Acc.: 1.0000
+2025-02-19 21:25:42,480 [INFO] - Epoch: 3/50
+2025-02-19 22:20:36,273 [INFO] - Training epoch stats:     Loss: 6.9904 - Binary-Cell-Dice: 0.7433 - Binary-Cell-Jacard: 0.6464 - Tissue-MC-Acc.: 1.0000
+2025-02-19 22:20:38,903 [INFO] - Epoch: 4/50
+2025-02-19 23:15:35,078 [INFO] - Training epoch stats:     Loss: 6.9179 - Binary-Cell-Dice: 0.7483 - Binary-Cell-Jacard: 0.6529 - Tissue-MC-Acc.: 1.0000
+2025-02-19 23:15:37,065 [INFO] - Epoch: 5/50
+2025-02-20 00:10:32,226 [INFO] - Training epoch stats:     Loss: 6.8715 - Binary-Cell-Dice: 0.7517 - Binary-Cell-Jacard: 0.6572 - Tissue-MC-Acc.: 1.0000
+2025-02-20 00:20:26,724 [INFO] - Validation epoch stats:   Loss: 6.5630 - Binary-Cell-Dice: 0.7851 - Binary-Cell-Jacard: 0.6984 - bPQ-Score: 0.5867 - mPQ-Score: 0.4962 - Tissue-MC-Acc.: 1.0000
+2025-02-20 00:20:26,727 [INFO] - New best model - save checkpoint
+2025-02-20 00:20:31,366 [INFO] - Epoch: 6/50
+2025-02-20 01:15:24,140 [INFO] - Training epoch stats:     Loss: 6.8199 - Binary-Cell-Dice: 0.7539 - Binary-Cell-Jacard: 0.6617 - Tissue-MC-Acc.: 1.0000
+2025-02-20 01:15:26,495 [INFO] - Epoch: 7/50
+2025-02-20 02:10:20,567 [INFO] - Training epoch stats:     Loss: 6.7903 - Binary-Cell-Dice: 0.7551 - Binary-Cell-Jacard: 0.6642 - Tissue-MC-Acc.: 1.0000
+2025-02-20 02:10:22,586 [INFO] - Epoch: 8/50
+2025-02-20 03:05:11,258 [INFO] - Training epoch stats:     Loss: 6.7517 - Binary-Cell-Dice: 0.7581 - Binary-Cell-Jacard: 0.6679 - Tissue-MC-Acc.: 1.0000
+2025-02-20 03:05:13,289 [INFO] - Epoch: 9/50
+2025-02-20 04:00:07,674 [INFO] - Training epoch stats:     Loss: 6.7213 - Binary-Cell-Dice: 0.7615 - Binary-Cell-Jacard: 0.6726 - Tissue-MC-Acc.: 1.0000
+2025-02-20 04:00:09,999 [INFO] - Epoch: 10/50
+2025-02-20 04:55:00,125 [INFO] - Training epoch stats:     Loss: 6.7042 - Binary-Cell-Dice: 0.7621 - Binary-Cell-Jacard: 0.6732 - Tissue-MC-Acc.: 1.0000
+2025-02-20 05:04:42,611 [INFO] - Validation epoch stats:   Loss: 6.3988 - Binary-Cell-Dice: 0.7943 - Binary-Cell-Jacard: 0.7124 - bPQ-Score: 0.6054 - mPQ-Score: 0.5193 - Tissue-MC-Acc.: 1.0000
+2025-02-20 05:04:42,613 [INFO] - New best model - save checkpoint
+2025-02-20 05:04:47,722 [INFO] - Epoch: 11/50
+2025-02-20 05:59:42,225 [INFO] - Training epoch stats:     Loss: 6.6648 - Binary-Cell-Dice: 0.7635 - Binary-Cell-Jacard: 0.6766 - Tissue-MC-Acc.: 1.0000
+2025-02-20 05:59:44,544 [INFO] - Epoch: 12/50
+2025-02-20 06:54:42,148 [INFO] - Training epoch stats:     Loss: 6.6354 - Binary-Cell-Dice: 0.7662 - Binary-Cell-Jacard: 0.6794 - Tissue-MC-Acc.: 1.0000
+2025-02-20 06:54:44,516 [INFO] - Epoch: 13/50
+2025-02-20 07:49:35,580 [INFO] - Training epoch stats:     Loss: 6.6248 - Binary-Cell-Dice: 0.7656 - Binary-Cell-Jacard: 0.6799 - Tissue-MC-Acc.: 1.0000
+2025-02-20 07:49:37,585 [INFO] - Epoch: 14/50
+2025-02-20 08:44:38,787 [INFO] - Training epoch stats:     Loss: 6.6046 - Binary-Cell-Dice: 0.7674 - Binary-Cell-Jacard: 0.6818 - Tissue-MC-Acc.: 1.0000
+2025-02-20 08:44:40,814 [INFO] - Epoch: 15/50
+2025-02-20 09:39:32,229 [INFO] - Training epoch stats:     Loss: 6.5828 - Binary-Cell-Dice: 0.7677 - Binary-Cell-Jacard: 0.6839 - Tissue-MC-Acc.: 1.0000
+2025-02-20 09:49:18,008 [INFO] - Validation epoch stats:   Loss: 6.3394 - Binary-Cell-Dice: 0.7988 - Binary-Cell-Jacard: 0.7207 - bPQ-Score: 0.6132 - mPQ-Score: 0.5300 - Tissue-MC-Acc.: 1.0000
+2025-02-20 09:49:18,011 [INFO] - New best model - save checkpoint
+2025-02-20 09:49:22,908 [INFO] - Epoch: 16/50
+2025-02-20 10:45:08,191 [INFO] - Training epoch stats:     Loss: 6.5666 - Binary-Cell-Dice: 0.7692 - Binary-Cell-Jacard: 0.6842 - Tissue-MC-Acc.: 1.0000
+2025-02-20 10:45:10,678 [INFO] - Epoch: 17/50
+2025-02-20 11:40:18,421 [INFO] - Training epoch stats:     Loss: 6.5432 - Binary-Cell-Dice: 0.7713 - Binary-Cell-Jacard: 0.6879 - Tissue-MC-Acc.: 1.0000
+2025-02-20 11:40:20,843 [INFO] - Epoch: 18/50
+2025-02-20 12:35:12,110 [INFO] - Training epoch stats:     Loss: 6.5360 - Binary-Cell-Dice: 0.7696 - Binary-Cell-Jacard: 0.6869 - Tissue-MC-Acc.: 1.0000
+2025-02-20 12:35:14,146 [INFO] - Epoch: 19/50
+2025-02-20 13:30:06,550 [INFO] - Training epoch stats:     Loss: 6.5249 - Binary-Cell-Dice: 0.7720 - Binary-Cell-Jacard: 0.6888 - Tissue-MC-Acc.: 1.0000
+2025-02-20 13:30:08,558 [INFO] - Epoch: 20/50
+2025-02-20 14:24:54,236 [INFO] - Training epoch stats:     Loss: 6.5115 - Binary-Cell-Dice: 0.7732 - Binary-Cell-Jacard: 0.6920 - Tissue-MC-Acc.: 1.0000
+2025-02-20 14:34:36,632 [INFO] - Validation epoch stats:   Loss: 6.2660 - Binary-Cell-Dice: 0.8025 - Binary-Cell-Jacard: 0.7255 - bPQ-Score: 0.6193 - mPQ-Score: 0.5377 - Tissue-MC-Acc.: 1.0000
+2025-02-20 14:34:36,635 [INFO] - New best model - save checkpoint
+2025-02-20 14:34:41,685 [INFO] - Epoch: 21/50
+2025-02-20 15:29:36,271 [INFO] - Training epoch stats:     Loss: 6.4930 - Binary-Cell-Dice: 0.7731 - Binary-Cell-Jacard: 0.6913 - Tissue-MC-Acc.: 1.0000
+2025-02-20 15:29:38,260 [INFO] - Epoch: 22/50
+2025-02-20 16:24:38,130 [INFO] - Training epoch stats:     Loss: 6.4819 - Binary-Cell-Dice: 0.7735 - Binary-Cell-Jacard: 0.6914 - Tissue-MC-Acc.: 1.0000
+2025-02-20 16:24:40,767 [INFO] - Epoch: 23/50
+2025-02-20 17:19:49,239 [INFO] - Training epoch stats:     Loss: 6.4636 - Binary-Cell-Dice: 0.7760 - Binary-Cell-Jacard: 0.6947 - Tissue-MC-Acc.: 1.0000
+2025-02-20 17:19:51,830 [INFO] - Epoch: 24/50
+2025-02-20 18:15:10,952 [INFO] - Training epoch stats:     Loss: 6.4522 - Binary-Cell-Dice: 0.7761 - Binary-Cell-Jacard: 0.6946 - Tissue-MC-Acc.: 1.0000
+2025-02-20 18:15:13,211 [INFO] - Epoch: 25/50
+2025-02-20 19:10:37,800 [INFO] - Training epoch stats:     Loss: 6.4454 - Binary-Cell-Dice: 0.7763 - Binary-Cell-Jacard: 0.6962 - Tissue-MC-Acc.: 1.0000
+2025-02-20 19:20:27,538 [INFO] - Validation epoch stats:   Loss: 6.2170 - Binary-Cell-Dice: 0.8049 - Binary-Cell-Jacard: 0.7301 - bPQ-Score: 0.6264 - mPQ-Score: 0.5451 - Tissue-MC-Acc.: 1.0000
+2025-02-20 19:20:27,541 [INFO] - New best model - save checkpoint
+2025-02-20 19:20:32,875 [INFO] - Epoch: 26/50
+2025-02-20 20:15:43,903 [INFO] - Training epoch stats:     Loss: 6.4374 - Binary-Cell-Dice: 0.7768 - Binary-Cell-Jacard: 0.6964 - Tissue-MC-Acc.: 1.0000
+2025-02-20 20:15:46,472 [INFO] - Epoch: 27/50
+2025-02-20 21:11:38,886 [INFO] - Training epoch stats:     Loss: 6.4299 - Binary-Cell-Dice: 0.7777 - Binary-Cell-Jacard: 0.6981 - Tissue-MC-Acc.: 1.0000
+2025-02-20 21:11:41,514 [INFO] - Epoch: 28/50
+2025-02-20 22:06:32,282 [INFO] - Training epoch stats:     Loss: 6.4179 - Binary-Cell-Dice: 0.7786 - Binary-Cell-Jacard: 0.6990 - Tissue-MC-Acc.: 1.0000
+2025-02-20 22:06:34,630 [INFO] - Epoch: 29/50
+2025-02-20 23:01:20,987 [INFO] - Training epoch stats:     Loss: 6.4165 - Binary-Cell-Dice: 0.7785 - Binary-Cell-Jacard: 0.6991 - Tissue-MC-Acc.: 1.0000
+2025-02-20 23:01:23,424 [INFO] - Epoch: 30/50
+2025-02-20 23:56:03,334 [INFO] - Training epoch stats:     Loss: 6.3842 - Binary-Cell-Dice: 0.7799 - Binary-Cell-Jacard: 0.7009 - Tissue-MC-Acc.: 1.0000
+2025-02-21 00:05:46,098 [INFO] - Validation epoch stats:   Loss: 6.0970 - Binary-Cell-Dice: 0.8061 - Binary-Cell-Jacard: 0.7319 - bPQ-Score: 0.6298 - mPQ-Score: 0.5471 - Tissue-MC-Acc.: 1.0000
+2025-02-21 00:05:46,101 [INFO] - New best model - save checkpoint
+2025-02-21 00:05:50,894 [INFO] - Epoch: 31/50
+2025-02-21 01:00:29,279 [INFO] - Training epoch stats:     Loss: 6.3135 - Binary-Cell-Dice: 0.7796 - Binary-Cell-Jacard: 0.7012 - Tissue-MC-Acc.: 1.0000
+2025-02-21 01:00:31,641 [INFO] - Epoch: 32/50
+2025-02-21 01:55:13,635 [INFO] - Training epoch stats:     Loss: 6.3111 - Binary-Cell-Dice: 0.7790 - Binary-Cell-Jacard: 0.7001 - Tissue-MC-Acc.: 1.0000
+2025-02-21 01:55:16,013 [INFO] - Epoch: 33/50
+2025-02-21 02:50:01,828 [INFO] - Training epoch stats:     Loss: 6.3040 - Binary-Cell-Dice: 0.7794 - Binary-Cell-Jacard: 0.7009 - Tissue-MC-Acc.: 1.0000
+2025-02-21 02:50:04,243 [INFO] - Epoch: 34/50
+2025-02-21 03:44:49,277 [INFO] - Training epoch stats:     Loss: 6.2939 - Binary-Cell-Dice: 0.7805 - Binary-Cell-Jacard: 0.7016 - Tissue-MC-Acc.: 1.0000
+2025-02-21 03:44:51,708 [INFO] - Epoch: 35/50
+2025-02-21 04:39:37,305 [INFO] - Training epoch stats:     Loss: 6.2874 - Binary-Cell-Dice: 0.7798 - Binary-Cell-Jacard: 0.7012 - Tissue-MC-Acc.: 1.0000
+2025-02-21 04:49:28,278 [INFO] - Validation epoch stats:   Loss: 6.0842 - Binary-Cell-Dice: 0.8070 - Binary-Cell-Jacard: 0.7338 - bPQ-Score: 0.6298 - mPQ-Score: 0.5495 - Tissue-MC-Acc.: 1.0000
+2025-02-21 04:49:28,281 [INFO] - New best model - save checkpoint
+2025-02-21 04:49:33,135 [INFO] - Epoch: 36/50
+2025-02-21 05:44:16,213 [INFO] - Training epoch stats:     Loss: 6.2808 - Binary-Cell-Dice: 0.7802 - Binary-Cell-Jacard: 0.7020 - Tissue-MC-Acc.: 1.0000
+2025-02-21 05:44:18,597 [INFO] - Epoch: 37/50
+2025-02-21 06:39:00,327 [INFO] - Training epoch stats:     Loss: 6.2766 - Binary-Cell-Dice: 0.7806 - Binary-Cell-Jacard: 0.7029 - Tissue-MC-Acc.: 1.0000
+2025-02-21 06:39:02,392 [INFO] - Epoch: 38/50
+2025-02-21 07:33:40,690 [INFO] - Training epoch stats:     Loss: 6.2584 - Binary-Cell-Dice: 0.7807 - Binary-Cell-Jacard: 0.7039 - Tissue-MC-Acc.: 1.0000
+2025-02-21 07:33:43,063 [INFO] - Epoch: 39/50
+2025-02-21 08:28:22,972 [INFO] - Training epoch stats:     Loss: 6.2582 - Binary-Cell-Dice: 0.7820 - Binary-Cell-Jacard: 0.7047 - Tissue-MC-Acc.: 1.0000
+2025-02-21 08:28:25,308 [INFO] - Epoch: 40/50
+2025-02-21 09:23:23,955 [INFO] - Training epoch stats:     Loss: 6.2622 - Binary-Cell-Dice: 0.7821 - Binary-Cell-Jacard: 0.7043 - Tissue-MC-Acc.: 1.0000
+2025-02-21 09:33:12,785 [INFO] - Validation epoch stats:   Loss: 6.0450 - Binary-Cell-Dice: 0.8087 - Binary-Cell-Jacard: 0.7364 - bPQ-Score: 0.6349 - mPQ-Score: 0.5563 - Tissue-MC-Acc.: 1.0000
+2025-02-21 09:33:12,789 [INFO] - New best model - save checkpoint
+2025-02-21 09:33:18,150 [INFO] - Epoch: 41/50
+2025-02-21 10:28:22,740 [INFO] - Training epoch stats:     Loss: 6.2514 - Binary-Cell-Dice: 0.7814 - Binary-Cell-Jacard: 0.7046 - Tissue-MC-Acc.: 1.0000
+2025-02-21 10:28:25,156 [INFO] - Epoch: 42/50
+2025-02-21 11:23:04,317 [INFO] - Training epoch stats:     Loss: 6.2449 - Binary-Cell-Dice: 0.7832 - Binary-Cell-Jacard: 0.7062 - Tissue-MC-Acc.: 1.0000
+2025-02-21 11:23:06,396 [INFO] - Epoch: 43/50
+2025-02-21 12:17:44,617 [INFO] - Training epoch stats:     Loss: 6.2307 - Binary-Cell-Dice: 0.7833 - Binary-Cell-Jacard: 0.7065 - Tissue-MC-Acc.: 1.0000
+2025-02-21 12:17:47,013 [INFO] - Epoch: 44/50
+2025-02-21 13:12:28,226 [INFO] - Training epoch stats:     Loss: 6.2428 - Binary-Cell-Dice: 0.7828 - Binary-Cell-Jacard: 0.7058 - Tissue-MC-Acc.: 1.0000
+2025-02-21 13:12:30,641 [INFO] - Epoch: 45/50
+2025-02-21 14:07:45,500 [INFO] - Training epoch stats:     Loss: 6.2278 - Binary-Cell-Dice: 0.7838 - Binary-Cell-Jacard: 0.7062 - Tissue-MC-Acc.: 1.0000
+2025-02-21 14:17:29,151 [INFO] - Validation epoch stats:   Loss: 6.0449 - Binary-Cell-Dice: 0.8095 - Binary-Cell-Jacard: 0.7368 - bPQ-Score: 0.6355 - mPQ-Score: 0.5565 - Tissue-MC-Acc.: 1.0000
+2025-02-21 14:17:29,154 [INFO] - New best model - save checkpoint
+2025-02-21 14:17:34,021 [INFO] - Epoch: 46/50
+2025-02-21 15:12:41,559 [INFO] - Training epoch stats:     Loss: 6.2335 - Binary-Cell-Dice: 0.7835 - Binary-Cell-Jacard: 0.7074 - Tissue-MC-Acc.: 1.0000
+2025-02-21 15:12:44,305 [INFO] - Epoch: 47/50
+2025-02-21 16:08:23,987 [INFO] - Training epoch stats:     Loss: 6.2295 - Binary-Cell-Dice: 0.7836 - Binary-Cell-Jacard: 0.7064 - Tissue-MC-Acc.: 1.0000
+2025-02-21 16:08:26,405 [INFO] - Epoch: 48/50
+2025-02-21 17:05:31,559 [INFO] - Training epoch stats:     Loss: 6.2270 - Binary-Cell-Dice: 0.7833 - Binary-Cell-Jacard: 0.7073 - Tissue-MC-Acc.: 1.0000
+2025-02-21 17:05:33,680 [INFO] - Epoch: 49/50
+2025-02-21 18:01:03,808 [INFO] - Training epoch stats:     Loss: 6.2212 - Binary-Cell-Dice: 0.7842 - Binary-Cell-Jacard: 0.7086 - Tissue-MC-Acc.: 1.0000
+2025-02-21 18:01:06,587 [INFO] - Epoch: 50/50
+2025-02-21 18:56:34,369 [INFO] - Training epoch stats:     Loss: 6.2231 - Binary-Cell-Dice: 0.7840 - Binary-Cell-Jacard: 0.7077 - Tissue-MC-Acc.: 1.0000
+2025-02-21 19:06:39,172 [INFO] - Validation epoch stats:   Loss: 6.0259 - Binary-Cell-Dice: 0.8107 - Binary-Cell-Jacard: 0.7388 - bPQ-Score: 0.6387 - mPQ-Score: 0.5608 - Tissue-MC-Acc.: 1.0000
+2025-02-21 19:06:39,208 [INFO] - New best model - save checkpoint
+2025-02-21 19:06:43,916 [INFO] - Finished run ukp1t3m7
