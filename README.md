@@ -44,10 +44,16 @@ If you meet any problem when installing Deformable Attention, please refer to th
 
 ## Preparation
 ### Data
-Download data from the `data` folder in  [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link). Put them in `./datasets` and `unzip` them.
+Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link). Put them in `./datasets` and `unzip` them.
 
 ### Pretrained Model
-Download model checkpoints from the `checkpoints` folder [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
+Download model checkpoints in the paper from the `checkpoints` folder [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
+
+If you want to train the model by yourself, you need to get the pretrained weights of UNI. You need to apply it in [UNI](https://huggingface.co/MahmoodLab/UNI). 
+
+
+### Configuration file
+Examples configuration files are available at `configurations` in [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
 
 
 ## Usage
@@ -55,7 +61,24 @@ Download model checkpoints from the `checkpoints` folder [CellVTA-Google-Drive](
     python run_cellvit.py --config [config-file-path]
 
 ### Inference
-    python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --gpu 0  
+    python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
+
+
+### Reproduction
+
+To reproduce the results on pannuke with our checkpoint, run `inference_cellvit_experiment_pannuke_from_checkpoint.py` as below:
+```bash
+python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+```
+
+
+
+To reproduce the results on conic which needs upsamling inference, run `inference_cellvit_upscale.py` as below:
+```bash
+python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+```
+
+
 
 
 ## Citation
