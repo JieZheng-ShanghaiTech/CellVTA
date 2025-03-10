@@ -11,7 +11,6 @@ import sys  # remove
 from pathlib import Path
 from typing import Callable, Tuple, Union
 
-sys.path.append("/homes/fhoerst/histo-projects/CellViT/")  # remove
 
 import numpy as np
 import pandas as pd
