@@ -58,11 +58,7 @@ from models.segmentation.cell_segmentation.cellvit import (
     CellViTUNI,
     CellViTUNIAdapter
 )
-from models.segmentation.cell_segmentation.cellvit_shared import (
-    CellViT256Shared,
-    CellViTSAMShared,
-    CellViTShared,
-)
+
 from utils.logger import Logger
 
 
@@ -161,11 +157,8 @@ class InferenceCellViT:
         self, model_type: str
     ) -> Union[
         CellViT,
-        CellViTShared,
         CellViT256,
-        CellViT256Shared,
         CellViTSAM,
-        CellViTSAMShared,
     ]:
         """Return the trained model for inference
 
@@ -178,11 +171,8 @@ class InferenceCellViT:
         """
         implemented_models = [
             "CellViT",
-            "CellViTShared",
             "CellViT256",
-            "CellViT256Shared",
             "CellViTSAM",
-            "CellViTSAMShared",
             "CellViTUNI",
             "CellViTUNIAdapter"
         ]
@@ -190,11 +180,9 @@ class InferenceCellViT:
             raise NotImplementedError(
                 f"Unknown model type. Please select one of {implemented_models}"
             )
-        if model_type in ["CellViT", "CellViTShared"]:
-            if model_type == "CellViT":
-                model_class = CellViT
-            elif model_type == "CellViTShared":
-                model_class = CellViTShared
+        if model_type in ["CellViT"]:
+            model_class = CellViT
+
             model = model_class(
                 num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
                 num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
@@ -206,22 +194,16 @@ class InferenceCellViT:
                 regression_loss=self.run_conf["model"].get("regression_loss", False),
             )
 
-        elif model_type in ["CellViT256", "CellViT256Shared"]:
-            if model_type == "CellViT256":
-                model_class = CellViT256
-            elif model_type == "CellViT256Shared":
-                model_class = CellViT256Shared
+        elif model_type in ["CellViT256"]:
+            model_class = CellViT256
             model = model_class(
                 model256_path=None,
                 num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
                 num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
                 regression_loss=self.run_conf["model"].get("regression_loss", False),
             )
-        elif model_type in ["CellViTSAM", "CellViTSAMShared"]:
-            if model_type == "CellViTSAM":
-                model_class = CellViTSAM
-            elif model_type == "CellViTSAMShared":
-                model_class = CellViTSAMShared
+        elif model_type in ["CellViTSAM"]:
+            model_class = CellViTSAM
             model = model_class(
                 model_path=None,
                 num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
@@ -262,11 +244,8 @@ class InferenceCellViT:
     ) -> tuple[
         Union[
             CellViT,
-            CellViTShared,
             CellViT256,
-            CellViT256Shared,
             CellViTSAM,
-            CellViTSAMShared,
             CellViTUNI,
         ],
         DataLoader,
@@ -351,11 +330,8 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
-            CellViTShared,
             CellViT256,
-            CellViT256Shared,
             CellViTSAM,
-            CellViTSAMShared,
         ],
         inference_dataloader: DataLoader,
         dataset_config: dict,
@@ -643,11 +619,8 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
-            CellViTShared,
             CellViT256,
-            CellViT256Shared,
-            CellViTSAM,
-            CellViTSAMShared,
+            CellViTSAM
         ],
         batch: tuple,
         generate_plots: bool = False,
