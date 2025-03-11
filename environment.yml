@@ -4,11 +4,13 @@ channels:
   - defaults
 dependencies:
   - python=3.9.7
-  - libtiff=4.5.0=h6adf6a1_2
-  - openslide=3.4.1=h7773abc_6
-  - pip=23.0=pyhd8ed1ab_0
+  - libtiff=4.5.0
+  - openslide=3.4.1
+  - pip=23.0
   - python-javabridge
   - gcc=11.4.0
+  - gxx=11.4.0
+  - libxcrypt
 
   - pip:
     - mako==1.2.4
@@ -26,7 +28,6 @@ dependencies:
     - geojson==3.0.0
     - jupyterlab==4.0.2
     - ipython-genutils==0.2.0
-    - keras==2.12.0
     - matplotlib==3.7.1
     - numpy>1.22,<1.24
     - opencv_python_headless==4.5.4.58
