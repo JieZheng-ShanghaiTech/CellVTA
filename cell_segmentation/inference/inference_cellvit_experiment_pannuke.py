@@ -53,9 +53,6 @@ from cell_segmentation.utils.post_proc_cellvit import calculate_instances
 from cell_segmentation.utils.tools import cropping_center, pair_coordinates
 from models.segmentation.cell_segmentation.cellvit import (
     CellViT,
-    CellViT256,
-    CellViTSAM,
-    CellViTUNI,
     CellViTUNIAdapter
 )
 

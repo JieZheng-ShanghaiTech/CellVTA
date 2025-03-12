@@ -52,16 +52,10 @@ from cell_segmentation.datasets.dataset_coordinator import select_dataset
 from cell_segmentation.trainer.trainer_cellvit import CellViTTrainer
 from models.segmentation.cell_segmentation.cellvit import (
     CellViT,
-    CellViTSAM,
-    CellViT256,
-    CellViTUNI,
     CellViTUNIAdapter
 )
-from models.segmentation.cell_segmentation.cellvit_shared import (
-    CellViTShared,
-    CellViT256Shared,
-    CellViTSAMShared,
-)
+
+
 from utils.tools import close_logger
 
 
@@ -556,16 +550,14 @@ class ExperimentCellVitPanNuke(BaseExperiment):
         self.seed_run(self.default_conf["random_seed"])
 
         # check for backbones
-        implemented_backbones = ["default", "vit256", "sam-b", "sam-l", "sam-h", "uni", "uni_adapter"]
+        implemented_backbones = ["default", "uni_adapter"]
         if backbone_type.lower() not in implemented_backbones:
             raise NotImplementedError(
                 f"Unknown Backbone Type - Currently supported are: {implemented_backbones}"
             )
         if backbone_type.lower() == "default":
-            if shared_decoders:
-                model_class = CellViTShared
-            else:
-                model_class = CellViT
+
+            model_class = CellViT
             model = model_class(
                 num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
                 num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
@@ -587,67 +579,6 @@ class ExperimentCellVitPanNuke(BaseExperiment):
                 cellvit_pretrained = torch.load(pretrained_model)
                 self.logger.info(model.load_state_dict(cellvit_pretrained, strict=True))
                 self.logger.info("Loaded CellViT model")
-
-        if backbone_type.lower() == "vit256":
-            if shared_decoders:
-                model_class = CellViT256Shared
-            else:
-                model_class = CellViT256
-            model = model_class(
-                model256_path=pretrained_encoder,
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-                drop_rate=self.run_conf["training"].get("drop_rate", 0),
-                attn_drop_rate=self.run_conf["training"].get("attn_drop_rate", 0),
-                drop_path_rate=self.run_conf["training"].get("drop_path_rate", 0),
-                regression_loss=regression_loss,
-            )
-            model.load_pretrained_encoder(model.model256_path)
-            if pretrained_model is not None:
-                self.logger.info(
-                    f"Loading pretrained CellViT model from path: {pretrained_model}"
-                )
-                cellvit_pretrained = torch.load(pretrained_model, map_location="cpu")
-                self.logger.info(model.load_state_dict(cellvit_pretrained, strict=True))
-            model.freeze_encoder()
-            self.logger.info("Loaded CellVit256 model")
-        if backbone_type.lower() in ["sam-b", "sam-l", "sam-h"]:
-            if shared_decoders:
-                model_class = CellViTSAMShared
-            else:
-                model_class = CellViTSAM
-            model = model_class(
-                model_path=pretrained_encoder,
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-                vit_structure=backbone_type,
-                drop_rate=self.run_conf["training"].get("drop_rate", 0),
-                regression_loss=regression_loss,
-            )
-            model.load_pretrained_encoder(model.model_path)
-            if pretrained_model is not None:
-                self.logger.info(
-                    f"Loading pretrained CellViT model from path: {pretrained_model}"
-                )
-                cellvit_pretrained = torch.load(pretrained_model, map_location="cpu")
-                self.logger.info(model.load_state_dict(cellvit_pretrained, strict=True))
-            model.freeze_encoder()
-            self.logger.info(f"Loaded CellViT-SAM model with backbone: {backbone_type}")
-        if backbone_type.lower() == "uni":
-            model_class = CellViTUNI
-            model = model_class(
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-            )
-            model.load_pretrained_encoder(pretrained_encoder)
-            if pretrained_model is not None:
-                self.logger.info(
-                    f"Loading pretrained CellViT model from path: {pretrained_model}"
-                )
-                cellvit_pretrained = torch.load(pretrained_model, map_location="cpu")
-                self.logger.info(model.load_state_dict(cellvit_pretrained, strict=True))
-            model.freeze_encoder()
-            self.logger.info("Loaded CellViT-UNI model")
 
         if backbone_type.lower() == "uni_adapter":
             model_class = CellViTUNIAdapter
