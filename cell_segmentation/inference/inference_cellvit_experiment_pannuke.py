@@ -154,8 +154,7 @@ class InferenceCellViT:
         self, model_type: str
     ) -> Union[
         CellViT,
-        CellViT256,
-        CellViTSAM,
+        CellViTUNIAdapter
     ]:
         """Return the trained model for inference
 
@@ -164,20 +163,17 @@ class InferenceCellViT:
                 CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared
 
         Returns:
-            Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]: Model
+            Union[CellViT, CellViTUNIAdapter]: Model
         """
         implemented_models = [
             "CellViT",
-            "CellViT256",
-            "CellViTSAM",
-            "CellViTUNI",
             "CellViTUNIAdapter"
         ]
         if model_type not in implemented_models:
             raise NotImplementedError(
                 f"Unknown model type. Please select one of {implemented_models}"
             )
-        if model_type in ["CellViT"]:
+        if model_type in ["CellViT", "CellViTUNIAdapter"]:
             model_class = CellViT
 
             model = model_class(
@@ -191,29 +187,6 @@ class InferenceCellViT:
                 regression_loss=self.run_conf["model"].get("regression_loss", False),
             )
 
-        elif model_type in ["CellViT256"]:
-            model_class = CellViT256
-            model = model_class(
-                model256_path=None,
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-                regression_loss=self.run_conf["model"].get("regression_loss", False),
-            )
-        elif model_type in ["CellViTSAM"]:
-            model_class = CellViTSAM
-            model = model_class(
-                model_path=None,
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-                vit_structure=self.run_conf["model"]["backbone"],
-                regression_loss=self.run_conf["model"].get("regression_loss", False),
-            )
-        elif model_type == "CellViTUNI":
-            model_class = CellViTUNI
-            model = model_class(
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-            )
             
         if model_type == "CellViTUNIAdapter":
             model_class = CellViTUNIAdapter
@@ -241,9 +214,7 @@ class InferenceCellViT:
     ) -> tuple[
         Union[
             CellViT,
-            CellViT256,
-            CellViTSAM,
-            CellViTUNI,
+            CellViTUNIAdapter
         ],
         DataLoader,
         dict,
@@ -326,9 +297,7 @@ class InferenceCellViT:
     def run_patch_inference(
         self,
         model: Union[
-            CellViT,
-            CellViT256,
-            CellViTSAM,
+            CellViT
         ],
         inference_dataloader: DataLoader,
         dataset_config: dict,
@@ -616,8 +585,7 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
-            CellViT256,
-            CellViTSAM
+            CellViTUNIAdapter
         ],
         batch: tuple,
         generate_plots: bool = False,
