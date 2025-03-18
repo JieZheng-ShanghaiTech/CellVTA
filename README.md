@@ -47,7 +47,7 @@ If you meet any problem when installing Deformable Attention, please refer to th
 Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link). Put them in `./datasets` and `unzip` them.
 
 ### Pretrained Model
-Download model checkpoints in the paper from the `checkpoints` folder [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
+Download model checkpoints in the paper from the `checkpoints` folder [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link) and put them in ./pretrained_models/cellvta.
 
 If you want to train the model by yourself, you need to get the pretrained weights of UNI. You can access it from [UNI](https://huggingface.co/MahmoodLab/UNI). 
 
@@ -59,26 +59,26 @@ Examples configuration files are available at `configurations` in [CellVTA-Googl
 ## Usage
 ### Train
 ```bash
-python run_cellvit.py --config [config-file-path]
+python cell_segmentation/run_cellvit.py --config [config-file-path]
 ```
 
 ### Inference
 ```bash
-python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
+python cell_segmentation/inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
 ```
 
 ### Reproduction
 
 To reproduce the results on pannuke with our checkpoint, run `inference_cellvit_experiment_pannuke_from_checkpoint.py` as below:
 ```bash
-python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+python cell_segmentation/inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
 ```
 
 
 
 To reproduce the results on conic which needs upsamling inference, run `inference_cellvit_upscale.py` as below:
 ```bash
-python inference/inference_cellvit_upscale.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+python cell_segmentation/inference/inference_cellvit_upscale.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
 ```
 
 
