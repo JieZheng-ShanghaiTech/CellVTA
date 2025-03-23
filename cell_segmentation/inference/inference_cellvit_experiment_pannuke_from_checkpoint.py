@@ -191,7 +191,7 @@ class InferenceCellViT:
                         deform_num_heads=8, 
                         drop_path_rate=0.4,
                         interaction_indexes=[[0, 5], [6, 11], [12, 17], [18, 23]],
-                        with_cffn=False,
+                        with_cffn=True,
                         cffn_ratio=0.25, 
                         deform_ratio=0.5, 
                         add_vit_feature=True)
