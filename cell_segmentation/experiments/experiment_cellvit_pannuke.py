@@ -583,15 +583,12 @@ class ExperimentCellVitPanNuke(BaseExperiment):
         if backbone_type.lower() == "uni_adapter":
             model_class = CellViTUNIAdapter
             model = model_class(
-                        #img_size=224, patch_size=16, init_values=1e-5, dynamic_img_size=True, 
-                        #embed_dim=1024, depth=24, num_heads=16, num_classes=1,
                         num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
                         num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
                         drop_rate=0,
                         conv_inplane=64, 
                         n_points=4,
                         deform_num_heads=8, 
-                        # mlp_ratio=4,
                         drop_path_rate=0.4,
                         interaction_indexes=[[0, 5], [6, 11], [12, 17], [18, 23]],
                         with_cffn=False,
@@ -611,13 +608,11 @@ class ExperimentCellVitPanNuke(BaseExperiment):
             model.freeze_encoder()
             self.logger.info("Loaded CellViT-UNI model")
         
-        
         self.logger.info(f"\nModel: {model}")
         # model = model.to("cuda:0")
         self.logger.info(
             f"\n{summary(model, input_size=(1, 3, 256, 256), device='cuda:0')}"
         )
-        
 
         return model
 

@@ -160,7 +160,7 @@ class InferenceCellViT:
 
         Args:
             model_type (str): Name of the model. Must either be one of:
-                CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared
+                CellViT, CellViTUNIAdapter
 
         Returns:
             Union[CellViT, CellViTUNIAdapter]: Model
@@ -191,8 +191,6 @@ class InferenceCellViT:
         if model_type == "CellViTUNIAdapter":
             model_class = CellViTUNIAdapter
             model = model_class(
-                        #img_size=224, patch_size=16, init_values=1e-5, dynamic_img_size=True, 
-                        #embed_dim=1024, depth=24, num_heads=16, num_classes=1,
                         num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
                         num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
                         drop_rate=0,
@@ -225,8 +223,8 @@ class InferenceCellViT:
             test_folds (List[int], optional): Test fold to use. Otherwise defined folds from config.yaml (in run_dir) are loaded. Defaults to None.
 
         Returns:
-            tuple[Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared], DataLoader, dict]:
-                Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]: Best model loaded form checkpoint
+            tuple[Union[CellViT, CellViTUNIAdapter], DataLoader, dict]:
+                Union[CellViT, CellViTUNIAdapter]: Best model loaded form checkpoint
                 DataLoader: Inference DataLoader
                 dict: Dataset configuration. Keys are:
                     * "tissue_types": describing the present tissue types with corresponding integer
@@ -297,7 +295,8 @@ class InferenceCellViT:
     def run_patch_inference(
         self,
         model: Union[
-            CellViT
+            CellViT,
+            CellViTUNIAdapter
         ],
         inference_dataloader: DataLoader,
         dataset_config: dict,
@@ -306,7 +305,7 @@ class InferenceCellViT:
         """Run Patch inference with given setup
 
         Args:
-            model (Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]): Model to use for inference
+            model (Union[CellViT, CellViTUNIAdapter]): Model to use for inference
             inference_dataloader (DataLoader): Inference Dataloader. Must return a batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)
@@ -593,7 +592,7 @@ class InferenceCellViT:
         """Inference step for a patch-wise batch
 
         Args:
-            model (CellViT): Model to use for inference
+            model (CellViT, CellViTUNIAdapter): Model to use for inference
             batch (tuple): Batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)
