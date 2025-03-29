@@ -173,7 +173,7 @@ class InferenceCellViT:
             raise NotImplementedError(
                 f"Unknown model type. Please select one of {implemented_models}"
             )
-        if model_type in ["CellViT", "CellViTUNIAdapter"]:
+        if model_type in ["CellViT"]:
             model_class = CellViT
 
             model = model_class(
