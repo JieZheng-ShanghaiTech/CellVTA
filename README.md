@@ -18,7 +18,7 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 
  -->
 
-## Architecture
+## Method
 <p align="center">
   <img src="./docs/figures/cellvta_structure.png"/>
 </p>
