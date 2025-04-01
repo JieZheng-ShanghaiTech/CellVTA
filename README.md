@@ -18,6 +18,13 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 
  -->
 
+## Architecture
+<p align="center">
+  <img src="./docs/figures/cellvta_structure.png"/>
+</p>
+
+
+
 ## Installation
 1. Download this repository.
   <!-- `git clone https://github.com/TIO-IKIM/CellViT.git` -->
@@ -80,7 +87,7 @@ python cell_segmentation/inference/inference_cellvit_upscale.py --config configs
 
 
 
-## Citation
+<!-- ## Citation
 
 XXX
-
+ -->
