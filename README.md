@@ -18,7 +18,9 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 
  -->
 
-## Method
+## Overview
+CellVTA is a novel method to perform cell segmentation and classification on pathology images. It comprises: (1) a ViT encoder, (2) an adapter module, and (3) a multi-branch decoder. First, the ViT encoder extracts features from an input image. Then the adapter module extracts multi-scale spatial information from the input image and injects them into the ViT encoder via feature interaction. The outputs of adapter are passed to the decoder via skip connections for cell segmentation. By incorporating a CNN-based adapter module, CellVTA improves the performance of vision foundation models for cell instance segmentation and outperforms the state-of-the-art methods on CoNIC dataset and PanNuke datasets.
+
 <p align="center">
   <img src="./docs/figures/cellvta_structure.png"/>
 </p>
