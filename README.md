@@ -55,6 +55,13 @@ If you meet any problem when installing Deformable Attention, please refer to th
 ### Data
 Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link). Put them in `./datasets` and `unzip` them.
 
+`pannuke_cellvit.zip` is the dataset for the training and inference of PanNuke.
+
+`conic_cellvit_patient_x40_linear_withOverlap.zip` is used for the training of CoNIC.
+
+`conic_cellvit_patient.zip` is used for the inference of CoNIC.
+
+
 ### Pretrained Models
 Pretrained CellVTA model checkpoints in the paper are publicly available. You can download them from the `checkpoints` folder in [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link) and put them in `./pretrained_models/cellvta`.
 
