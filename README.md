@@ -94,7 +94,7 @@ python cell_segmentation/inference/inference_cellvit_upscale.py --config configs
 ```
 
 ## Acknowledgement
-This code is build upon [CellViT](https://github.com/TIO-IKIM/CellViT) and [ViT-Adapter](https://github.com/czczup/ViT-Adapter). We gratefully acknowledge the authors for their contributions to the research community. 
+This code is built upon [CellViT](https://github.com/TIO-IKIM/CellViT) and [ViT-Adapter](https://github.com/czczup/ViT-Adapter). We gratefully acknowledge the authors of the following papers for their contributions to the research community. 
 >[CellViT: Vision Transformers for Precise Cell Segmentation and Classification](https://www.sciencedirect.com/science/article/pii/S1361841524000689) <br />
 Hörst, Fabian, et al. "Cellvit: Vision transformers for precise cell segmentation and classification." Medical Image Analysis 94 (2024): 103143.
 
