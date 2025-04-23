@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 # Coordinate the datasets, used to select the right dataset with corresponding setting
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 from typing import Callable

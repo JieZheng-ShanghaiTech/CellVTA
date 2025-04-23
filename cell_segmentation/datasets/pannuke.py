@@ -3,7 +3,10 @@
 #
 # Dataset information: https://arxiv.org/abs/2003.10778
 # Please Prepare Dataset as described here: docs/readmes/pannuke.md
-
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import logging

@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 # Logging Class
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 import datetime
 from typing import Literal, Union

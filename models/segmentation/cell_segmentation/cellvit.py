@@ -3,6 +3,10 @@
 #
 # UNETR paper and code: https://github.com/tamasino52/UNETR
 # SAM paper and code: https://segment-anything.com/
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import numpy as np

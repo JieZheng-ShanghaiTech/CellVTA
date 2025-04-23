@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # GeoJson templates
-
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 def get_template_point() -> dict:

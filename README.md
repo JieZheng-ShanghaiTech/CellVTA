@@ -93,7 +93,13 @@ To reproduce the results on conic which needs upsamling inference, run `inferenc
 python cell_segmentation/inference/inference_cellvit_upscale.py --config configs/inference/CellVTA_Conic_upscale_inference.yaml --output_dir logs/inference --gpu 0
 ```
 
+## Acknowledgement
+This code is build upon [CellViT](https://github.com/TIO-IKIM/CellViT) and [ViT-Adapter](https://github.com/czczup/ViT-Adapter). We gratefully acknowledge the authors for their contributions to the research community. 
+>[CellViT: Vision Transformers for Precise Cell Segmentation and Classification](https://www.sciencedirect.com/science/article/pii/S1361841524000689) <br />
+Hörst, Fabian, et al. "Cellvit: Vision transformers for precise cell segmentation and classification." Medical Image Analysis 94 (2024): 103143.
 
+>[Vision Transformer Adapter for Dense Predictions](https://openreview.net/forum?id=plKu2GByCNW) <br />
+Chen, Zhe, et al. "Vision Transformer Adapter for Dense Predictions." The Eleventh International Conference on Learning Representations, 2023.
 
 
 <!-- ## Citation

@@ -3,6 +3,10 @@
 # Without merging WSI
 #
 # Aim is to calculate metrics as defined for the PanNuke dataset
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import argparse
