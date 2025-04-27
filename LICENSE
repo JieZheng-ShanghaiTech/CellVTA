@@ -1,3 +1,33 @@
+LICENSE
+
+This repository contains two components with distinct licensing terms:
+
+------------------------------------------
+1. CellViT-Derivative Code
+Includes: Code authored by Fabian Hörst and Jens Kleesiek (e.g., segmentation head, training scripts). Inlcuding training, inference and postprocessing code.
+License: Apache License 2.0, modified by the Commons Clause and attribution terms below:
+
+Commons Clause Restriction (CellViT)
+You may not sell, rent, or commercially exploit the CellViT-Derivative Code without explicit written permission from Fabian Hörst and Jens Kleesiek.
+
+Required Attribution:
+If any part of this work is used, you must cite:
+If any parts of this work is used, a citation of the following work is necessary:
+Hörst, F., Rempe, M., Heine, L., Seibold, C., Keyl, J., Baldini, G., Ugurel, S., Siveke, J., Grünwald, B., Egger, J., & Kleesiek, J. (2023). CellViT: Vision Transformers for precise cell segmentation and classification. https://doi.org/10.48550/ARXIV.2306.15350
+
+------------------------------------------
+2. Original Code
+
+Includes: Code Authored by Yang Yang, Xijie Xu and Jie Zheng (e.g. cellvit_adapter.py, inference_cellvit_upsample.py). Including the code related to the structure of CellVTA and upsample inference.
+License: Apache License 2.0, modified by the Commons Clause below:
+
+Commons Clause Restriction (Original Code)
+You may not sell, rent, or commercially exploit the Original Code without explicit written permission from Yang Yang, Xijie Xu and Jie Zheng.
+
+
+===========================================
+APPENDIX A: Apache License 2.0 
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
