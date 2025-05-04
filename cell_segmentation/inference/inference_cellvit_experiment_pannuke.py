@@ -154,8 +154,6 @@ class InferenceCellViT:
         self, model_type: str
     ) -> Union[
         CellViT,
-        CellViT256,
-        CellViTSAM,
     ]:
         """Return the trained model for inference
 
@@ -241,9 +239,6 @@ class InferenceCellViT:
     ) -> tuple[
         Union[
             CellViT,
-            CellViT256,
-            CellViTSAM,
-            CellViTUNI,
         ],
         DataLoader,
         dict,
@@ -327,8 +322,6 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
-            CellViT256,
-            CellViTSAM,
         ],
         inference_dataloader: DataLoader,
         dataset_config: dict,
@@ -616,8 +609,6 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
-            CellViT256,
-            CellViTSAM
         ],
         batch: tuple,
         generate_plots: bool = False,
