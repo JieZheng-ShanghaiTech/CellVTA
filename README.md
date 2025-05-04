@@ -18,6 +18,15 @@ Cell instance segmentation is a fundamental task in digital pathology with broad
 
  -->
 
+## Overview
+CellVTA is a novel method to perform cell segmentation and classification on pathology images. It comprises: (1) a ViT encoder, (2) an adapter module, and (3) a multi-branch decoder. First, the ViT encoder extracts features from an input image. Then the adapter module extracts multi-scale spatial information from the input image and injects them into the ViT encoder via feature interaction. The outputs of adapter are passed to the decoder via skip connections for cell segmentation. By incorporating a CNN-based adapter module, CellVTA improves the performance of vision foundation models for cell instance segmentation and outperforms the state-of-the-art methods on CoNIC and PanNuke dataset.
+
+<p align="center">
+  <img src="./docs/figures/cellvta_structure.png"/>
+</p>
+
+
+
 ## Installation
 1. Download this repository.
   <!-- `git clone https://github.com/TIO-IKIM/CellViT.git` -->
@@ -46,45 +55,54 @@ If you meet any problem when installing Deformable Attention, please refer to th
 ### Data
 Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link). Put them in `./datasets` and `unzip` them.
 
-### Pretrained Model
-Download model checkpoints in the paper from the `checkpoints` folder [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
+`pannuke_cellvit.zip` is the dataset for the training and inference of PanNuke.
 
-If you want to train the model by yourself, you need to get the pretrained weights of UNI. You can access it from [UNI](https://huggingface.co/MahmoodLab/UNI). 
+`conic_cellvit_patient_x40_linear_withOverlap.zip` is used for the training of CoNIC.
+
+`conic_cellvit_patient.zip` is used for the inference of CoNIC.
 
 
-### Configuration file
-Examples configuration files are available at `configurations` in [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link).
+### Pretrained Models
+Pretrained CellVTA model checkpoints in the paper are publicly available. You can download them from the `checkpoints` folder in [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link) and put them in `./pretrained_models/cellvta`.
 
+If you want to train CellVTA by yourself, you need to get the pretrained weights of UNI. You can access it from [UNI](https://huggingface.co/MahmoodLab/UNI) and put it in `./pretrained_models/vit_large_patch16_224.dinov2.uni_mass100k`.
+
+
+### Configuration files
+Examples configuration files are provided in the `configs` folder.
 
 ## Usage
 ### Train
 ```bash
-python run_cellvit.py --config [config-file-path]
+python cell_segmentation/run_cellvit.py --config [config-file-path]
 ```
 
 ### Inference
 ```bash
-python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
+python cell_segmentation/inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
 ```
-
-### Reproduction
 
 To reproduce the results on pannuke with our checkpoint, run `inference_cellvit_experiment_pannuke_from_checkpoint.py` as below:
 ```bash
-python inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+python cell_segmentation/inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config configs/inference/CellVTA_PanNuke_split1_inference.yaml --output_dir logs/inference --gpu 0
 ```
-
 
 
 To reproduce the results on conic which needs upsamling inference, run `inference_cellvit_upscale.py` as below:
 ```bash
-python inference/inference_cellvit_upscale.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0
+python cell_segmentation/inference/inference_cellvit_upscale.py --config configs/inference/CellVTA_Conic_upscale_inference.yaml --output_dir logs/inference --gpu 0
 ```
 
+## Acknowledgement
+This code is built upon [CellViT](https://github.com/TIO-IKIM/CellViT) and [ViT-Adapter](https://github.com/czczup/ViT-Adapter). We gratefully acknowledge the authors of the following papers for their contributions to the research community. 
+>[CellViT: Vision Transformers for Precise Cell Segmentation and Classification](https://www.sciencedirect.com/science/article/pii/S1361841524000689) <br />
+Hörst, Fabian, et al. "Cellvit: Vision transformers for precise cell segmentation and classification." Medical Image Analysis 94 (2024): 103143.
+
+>[Vision Transformer Adapter for Dense Predictions](https://openreview.net/forum?id=plKu2GByCNW) <br />
+Chen, Zhe, et al. "Vision Transformer Adapter for Dense Predictions." The Eleventh International Conference on Learning Representations, 2023.
 
 
-
-## Citation
+<!-- ## Citation
 
 XXX
-
+ -->

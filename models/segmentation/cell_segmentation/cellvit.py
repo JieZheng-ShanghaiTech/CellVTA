@@ -3,6 +3,10 @@
 #
 # UNETR paper and code: https://github.com/tamasino52/UNETR
 # SAM paper and code: https://segment-anything.com/
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import numpy as np
@@ -108,34 +112,13 @@ class CellViT(nn.Module):
             self.skip_dim_12 = 256
             self.bottleneck_dim = 512
 
-        # version with shared skip_connections
-        # self.decoder0 = nn.Sequential(
-        #     Conv2DBlock(3, 32, 3, dropout=self.drop_rate),
-        #     Conv2DBlock(32, 64, 3, dropout=self.drop_rate),
-        # )  # skip connection after positional encoding, shape should be H, W, 64
-        # self.decoder1 = nn.Sequential(
-        #     Deconv2DBlock(self.embed_dim, self.skip_dim_11, dropout=self.drop_rate),
-        #     Deconv2DBlock(self.skip_dim_11, self.skip_dim_12, dropout=self.drop_rate),
-        #     Deconv2DBlock(self.skip_dim_12, 128, dropout=self.drop_rate),
-        # )  # skip connection 1
-        # self.decoder2 = nn.Sequential(
-        #     Deconv2DBlock(self.embed_dim, self.skip_dim_11, dropout=self.drop_rate),
-        #     Deconv2DBlock(self.skip_dim_11, 256, dropout=self.drop_rate),
-        # )  # skip connection 2
-        # self.decoder3 = nn.Sequential(
-        #     Deconv2DBlock(self.embed_dim, self.bottleneck_dim, dropout=self.drop_rate)
-        # )  # skip connection 3
 
-        # version with shared skip_connections
+
         self.decoder0 = nn.Sequential(
             Conv2DBlock(3, 32, 3, dropout=self.drop_rate),
             Conv2DBlock(32, 64, 3, dropout=self.drop_rate),
         )  # skip connection after positional encoding, shape should be H, W, 64
-        # self.decoder1 = nn.Sequential(
-        #     Deconv2DBlock(self.embed_dim, self.skip_dim_11, dropout=self.drop_rate),
-        #     Deconv2DBlock(self.skip_dim_11, self.skip_dim_12, dropout=self.drop_rate),
-        #     Deconv2DBlock(self.skip_dim_12, 128, dropout=self.drop_rate),
-        # )  # skip connection 1
+       
         self.decoder1 = nn.Sequential(
             Conv2DBlock(
                 self.embed_dim, 128, dropout=self.drop_rate
@@ -145,10 +128,8 @@ class CellViT(nn.Module):
             ),
             # Deconv2DBlock(self.embed_dim, 128, dropout=self.drop_rate),
         )  # skip connection 1
-        # self.decoder2 = nn.Sequential(
-        #     Deconv2DBlock(self.embed_dim, self.skip_dim_11, dropout=self.drop_rate),
-        #     Deconv2DBlock(self.skip_dim_11, 256, dropout=self.drop_rate),
-        # )  # skip connection 2
+       
+        # skip connection 2
         self.decoder2 = nn.Sequential(
             Conv2DBlock(
                 self.embed_dim, 256, dropout=self.drop_rate
@@ -157,7 +138,6 @@ class CellViT(nn.Module):
                 256, 256, dropout=self.drop_rate
             ),
             
-            # Deconv2DBlock(self.embed_dim, 256, dropout=self.drop_rate)
         )  # skip connection 2
         self.decoder3 = nn.Sequential(
             Conv2DBlock(
@@ -166,7 +146,6 @@ class CellViT(nn.Module):
             Conv2DBlock(
                 self.bottleneck_dim, self.bottleneck_dim, dropout=self.drop_rate
             ),
-            # Deconv2DBlock(self.embed_dim, self.bottleneck_dim, dropout=self.drop_rate)
         )  # skip connection 3
         
         
@@ -294,9 +273,7 @@ class CellViT(nn.Module):
         """
         
         bottleneck_upsampler = nn.Sequential(
-            Deconv2DBlock(self.embed_dim, self.bottleneck_dim, dropout=self.drop_rate),
-            # Deconv2DBlock(self.bottleneck_dim, self.bottleneck_dim, dropout=self.drop_rate),
-        )
+            Deconv2DBlock(self.embed_dim, self.bottleneck_dim, dropout=self.drop_rate))
         
         decoder3_upsampler = nn.Sequential(
             Conv2DBlock(
@@ -468,13 +445,23 @@ class CellViT(nn.Module):
 
 
 class CellViTUNIAdapter(CellViT):
-    """CellViT with UNI backbone settings
-
-    Skip connections are shared between branches, but each network has a distinct encoder
+    """CellVTA with UNI backbone
 
     Args:
-
-    Raises:
+        num_nuclei_classes (int): Number of nuclei classes (including background)
+        num_tissue_classes (int): Number of tissue classes
+        drop_rate (float, optional): Dropout in MLP. Defaults to 0.
+        regression_loss (bool, optional): Use regressive loss for predicting vector components.
+            Adds two additional channels to the binary decoder, but returns it as own entry in dict. Defaults to False.
+        conv_inplane(int, optional): influence the number of feature map channels in the spatial proir module.
+        n_points(int, optional): number of reference points in deformable attention
+        deform_num_heads(int, optional): number of heads in deformable attention
+        interaction_indexes(List[List[int, int]]): index of ViT blocks for feature interaction
+        add_vit_feature(bool, optional): whether to add vit features to the output of adapter.
+        with_cffn(bool, optional): whether to use ConvFFN after cross attention
+        cffn_ratio(float, optional): hyperparamater to control the hidden dimension in ConvFFN
+        deform_ratio(float, optional): ratio of deformable attention
+        drop_path_rate(float, optional): drop path rate used in adapter module        
 
     """
 
@@ -487,7 +474,7 @@ class CellViTUNIAdapter(CellViT):
         conv_inplane=64, 
         n_points=4,
         deform_num_heads=6, 
-        init_values=0., 
+        init_values=1e-5, 
         interaction_indexes=None, 
         with_cffn=True,
         cffn_ratio=0.25, 
@@ -497,9 +484,8 @@ class CellViTUNIAdapter(CellViT):
         with_cp=False,
         drop_path_rate=0.
     ):
-        # self.patch_size = 16
+
         self.prompt_embed_dim = 256
-        
         self.embed_dim = 1024 # UNI is 1024
         self.input_channels = 3
         self.extract_layers = [5, 11, 17, 23]
@@ -528,16 +514,12 @@ class CellViTUNIAdapter(CellViT):
                                           depth=24, 
                                           num_heads=16, 
                                           num_classes=self.num_tissue_classes,
-                                          
-                                          # global_attn_indexes=self.encoder_global_attn_indexes,
-                                          # window_size=14,
-                                          # out_chans=self.prompt_embed_dim,
                                           extract_layers=self.extract_layers,
                                           conv_inplane=conv_inplane, 
                                           n_points=n_points,
                                           deform_num_heads=deform_num_heads, 
                                           interaction_indexes=interaction_indexes, 
-                                          with_cffn=True,
+                                          with_cffn=with_cffn,
                                           cffn_ratio=cffn_ratio, 
                                           deform_ratio=deform_ratio, 
                                           add_vit_feature=add_vit_feature,
@@ -583,15 +565,6 @@ class CellViTUNIAdapter(CellViT):
         out_dict["tissue_types"], z = self.encoder(x)
         z0, z1, z2, z3, z4 = x, *z
 
-        # performing reshape for the convolutional layers and upsampling (restore spatial dimension)
-        # patch_dim = [int(d / self.patch_size) for d in [x.shape[-2], x.shape[-1]]]
-        # z4 = z4[:, 1:, :].transpose(-1, -2).view(-1, self.embed_dim, *patch_dim)
-        # z3 = z3[:, 1:, :].transpose(-1, -2).view(-1, self.embed_dim, *patch_dim)
-        # z2 = z2[:, 1:, :].transpose(-1, -2).view(-1, self.embed_dim, *patch_dim)
-        # z1 = z1[:, 1:, :].transpose(-1, -2).view(-1, self.embed_dim, *patch_dim)
-        
-        # print(z0.shape, z1.shape, z2.shape, z3.shape, z4.shape)
-        # print("**************************")
 
         if self.regression_loss:
             nb_map = self._forward_upsample(
@@ -672,41 +645,6 @@ class DataclassHVStorage:
     num_tissue_classes: int = 19
     num_nuclei_classes: int = 6
 
-    # def __post_init__(self):
-    #     # check shape of every element
-    #     assert list(self.nuclei_binary_map.shape) == [
-    #         self.batch_size,
-    #         2,
-    #         self.h,
-    #         self.w,
-    #     ], "Nuclei Binary Map must be a softmax tensor with shape (B, 2, H, W)"
-    #     assert list(self.hv_map.shape) == [
-    #         self.batch_size,
-    #         2,
-    #         self.h,
-    #         self.w,
-    #     ], "HV Map must be a tensor with shape (B, 2, H, W)"
-    #     assert list(self.nuclei_type_map.shape) == [
-    #         self.batch_size,
-    #         self.num_nuclei_classes,
-    #         self.h,
-    #         self.w,
-    #     ], "Nuclei Type Map must be a tensor with shape (B, num_nuclei_classes, H, W)"
-    #     assert list(self.instance_map.shape) == [
-    #         self.batch_size,
-    #         self.h,
-    #         self.w,
-    #     ], "Instance Map must be a tensor with shape (B, H, W)"
-    #     assert list(self.instance_types_nuclei.shape) == [
-    #         self.batch_size,
-    #         self.num_nuclei_classes,
-    #         self.h,
-    #         self.w,
-    #     ], "Instance Types Nuclei must be a tensor with shape (B, num_nuclei_classes, H, W)"
-    #     if self.regression_map is not None:
-    #         self.regression_loss = True
-    #     else:
-    #         self.regression_loss = False
 
     def get_dict(self) -> dict:
         """Return dictionary of entries"""

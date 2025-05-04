@@ -168,10 +168,9 @@ def global_pool_nlc(
 
 
 class UNIAdapterEncoder(nn.Module):
-    """ Vision Transformer
-
-    A PyTorch impl of : `An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale`
-        - https://arxiv.org/abs/2010.11929
+    """ 
+    CellVTA encoder with UNI.
+    This implementation is based on the Timm Vision Transformer.
     """
     dynamic_img_size: Final[bool]
 
@@ -280,6 +279,7 @@ class UNIAdapterEncoder(nn.Module):
         self.dynamic_img_size = dynamic_img_size
         self.grad_checkpointing = False
         
+        # spatial prior module
         self.spm = SpatialPriorModule(inplanes=conv_inplane, embed_dim=embed_dim, with_cp=False)
         
         
@@ -334,6 +334,7 @@ class UNIAdapterEncoder(nn.Module):
             )
             for i in range(depth)])
         
+        # feature interaction module
         self.interactions = nn.Sequential(*[
             InteractionBlock(dim=embed_dim, num_heads=deform_num_heads, n_points=n_points,
                              init_values=init_values, drop_path=self.drop_path_rate,
@@ -509,7 +510,6 @@ class UNIAdapterEncoder(nn.Module):
         if self.reg_token is not None:
             to_cat.append(self.reg_token.expand(x.shape[0], -1, -1))
             
-        # print(len(to_cat),to_cat[0].shape, x.shape)
 
         if self.no_embed_class:
             # deit-3, updated JAX (big vision)
@@ -621,41 +621,29 @@ class UNIAdapterEncoder(nn.Module):
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # print(x.shape)
         deform_inputs1, deform_inputs2 = deform_inputs(x)
-        # print(deform_inputs1[0].shape, deform_inputs2[0].shape)
         
+        # spm feature extraction
         c1, c2, c3, c4 = self.spm(x)
         c2, c3, c4 = self._add_level_embed(c2, c3, c4)
         c = torch.cat([c2, c3, c4], dim=1)
         
-        # print(c1.shape, c2.shape,c3.shape,c4.shape, c.shape)
-        # forward features
-        # print(x.shape)
+        # tokenization and position embedding
         x = self.patch_embed(x)
         bs, H, W, dim = x.shape
-        n = H*W
-        # print(x.shape)
-        # 2, 197, 1024;   the 0th of dim 1 is class token
         x = self._pos_embed(x)
         x = self.patch_drop(x)
         x = self.norm_pre(x)
-        # print(x.shape)
         
+        # feature interaction via cross attention
         outs = list()
         for i, layer in enumerate(self.interactions):
-            # print(x.shape, c.shape)
             indexes = self.interaction_indexes[i]
             x, c = layer(x, c, self.blocks[indexes[0]:indexes[-1] + 1],
                          deform_inputs1, deform_inputs2, H, W)
-            # print("***",x.shape, c.shape)
             outs.append(x[:, 1:, :].view(bs, H, W, dim).contiguous())
         
-
-        # x = self.blocks(x)
-        # print(x.shape)
         x = self.norm(x)
-        # print(x.shape)
         
         
         # Split & Reshape
@@ -670,8 +658,8 @@ class UNIAdapterEncoder(nn.Module):
         c1 = self.up(rearrange(c2, "b h w c -> b c h w")) + c1
         c1 = rearrange(c1, "b c h w -> b h w c")
         
-        # print(c1.shape, c2.shape,c3.shape,c4.shape, c.shape)
-        
+
+        # add combine vit and adatper features
         x1, x2, x3, x4 = outs
         x1 = rearrange(x1, "b h w c -> b c h w")
         x2 = rearrange(x2, "b h w c -> b c h w")
@@ -689,18 +677,21 @@ class UNIAdapterEncoder(nn.Module):
         
         c1, c2, c3, c4 = c1 + x1, c2 + x2, c3 + x3, c4 + x4
         
+        
+        # final normalization
         f1 = self.norm1(c1)
         f2 = self.norm2(c2)
         f3 = self.norm3(c3)
         f4 = self.norm4(c4)
         
         
-        # forward head
+        # forward head for tissue classification
         x = self.pool(x)
         x = self.fc_norm(x)
         x = self.head_drop(x)
         x = self.head(x)
-        # print(x.shape)
+        
+        
         return x,  [f1, f2, f3, f4]
 
 

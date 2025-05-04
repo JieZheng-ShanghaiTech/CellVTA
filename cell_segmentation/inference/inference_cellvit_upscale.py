@@ -2,7 +2,7 @@
 # CellViT Inference Method for Patch-Wise Inference on a test set
 # Without merging WSI
 #
-# Aim is to calculate metrics as defined for the Lizard dataset
+# Aim is to calculate metrics as defined for the CoNIC dataset
 #
 
 
@@ -210,7 +210,7 @@ class InferenceCellViTUpscale:
 
         Args:
             model_type (str): Name of the model. Must either be one of:
-                CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared
+                CellViT, CellViTUNIAdapter
 
         Returns:
             Union[CellViT, CellViTUNIAdapter]: Model
@@ -223,8 +223,7 @@ class InferenceCellViTUpscale:
             raise NotImplementedError(
                 f"Unknown model type. Please select one of {implemented_models}"
             )
-        if model_type in ["CellViT"]:
-
+        if model_type == "CellViT":
             model_class = CellViT
             model = model_class(
                 num_nuclei_classes=self.run_conf["model"]["num_nuclei_classes"],
@@ -246,10 +245,9 @@ class InferenceCellViTUpscale:
                         conv_inplane=64, 
                         n_points=4,
                         deform_num_heads=8, 
-                        # mlp_ratio=4,
                         drop_path_rate=0.4,
                         interaction_indexes=[[0, 5], [6, 11], [12, 17], [18, 23]],
-                        with_cffn=False,
+                        with_cffn=True,
                         cffn_ratio=0.25, 
                         deform_ratio=0.5, 
                         add_vit_feature=True)
@@ -541,7 +539,8 @@ class InferenceCellViTUpscale:
     def inference_step(
         self,
         model: Union[
-            CellViT
+            CellViT,
+            CellViTUNIAdapter
         ],
         batch: tuple,
         generate_plots: bool = False,
@@ -549,7 +548,7 @@ class InferenceCellViTUpscale:
         """Inference step for a patch-wise batch
 
         Args:
-            model (CellViT): Model to use for inference
+            model (CellViT, CellViTUNIAdapter): Model to use for inference
             batch (tuple): Batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)

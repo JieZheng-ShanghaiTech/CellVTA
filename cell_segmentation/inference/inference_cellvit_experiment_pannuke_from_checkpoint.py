@@ -3,6 +3,10 @@
 # Without merging WSI
 #
 # Aim is to calculate metrics as defined for the PanNuke dataset
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import argparse
@@ -145,27 +149,27 @@ class InferenceCellViT:
     def get_model(
         self, model_type: str
     ) -> Union[
-        CellViT
+        CellViT,
+        CellViTUNIAdapter
     ]:
         """Return the trained model for inference
 
         Args:
             model_type (str): Name of the model. Must either be one of:
-                CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared
+                CellViT, CellViTUNIAdapter
 
         Returns:
-            Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]: Model
+            Union[CellViT, CellViTUNIAdapter]: Model
         """
         implemented_models = [
             "CellViT",
-
             "CellViTUNIAdapter"
         ]
         if model_type not in implemented_models:
             raise NotImplementedError(
                 f"Unknown model type. Please select one of {implemented_models}"
             )
-        if model_type in ["CellViT"]:
+        if model_type == "CellViT":
 
             model_class = CellViT
 
@@ -189,10 +193,9 @@ class InferenceCellViT:
                         conv_inplane=64, 
                         n_points=4,
                         deform_num_heads=8, 
-                        # mlp_ratio=4,
                         drop_path_rate=0.4,
                         interaction_indexes=[[0, 5], [6, 11], [12, 17], [18, 23]],
-                        with_cffn=False,
+                        with_cffn=True,
                         cffn_ratio=0.25, 
                         deform_ratio=0.5, 
                         add_vit_feature=True)
@@ -204,7 +207,7 @@ class InferenceCellViT:
     ) -> tuple[
         Union[
             CellViT,
-
+            CellViTUNIAdapter
         ],
         DataLoader,
         dict,
@@ -215,8 +218,8 @@ class InferenceCellViT:
             test_folds (List[int], optional): Test fold to use. Otherwise defined folds from config.yaml (in run_dir) are loaded. Defaults to None.
 
         Returns:
-            tuple[Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared], DataLoader, dict]:
-                Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]: Best model loaded form checkpoint
+            tuple[Union[CellViT, CellViTUNIAdapter], DataLoader, dict]:
+                Union[CellViT, CellViTUNIAdapter]: Best model loaded form checkpoint
                 DataLoader: Inference DataLoader
                 dict: Dataset configuration. Keys are:
                     * "tissue_types": describing the present tissue types with corresponding integer
@@ -287,7 +290,8 @@ class InferenceCellViT:
     def run_patch_inference(
         self,
         model: Union[
-            CellViT
+            CellViT,
+            CellViTUNIAdapter
         ],
         inference_dataloader: DataLoader,
         dataset_config: dict,
@@ -296,7 +300,7 @@ class InferenceCellViT:
         """Run Patch inference with given setup
 
         Args:
-            model (Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]): Model to use for inference
+            model (Union[CellViT, CellViTUNIAdapter]): Model to use for inference
             inference_dataloader (DataLoader): Inference Dataloader. Must return a batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)
@@ -574,7 +578,8 @@ class InferenceCellViT:
     def inference_step(
         self,
         model: Union[
-            CellViT
+            CellViT,
+            CellViTUNIAdapter
         ],
         batch: tuple,
         generate_plots: bool = False,
@@ -582,7 +587,7 @@ class InferenceCellViT:
         """Inference step for a patch-wise batch
 
         Args:
-            model (CellViT): Model to use for inference
+            model (CellViT, CellViTUNIAdapter): Model to use for inference
             batch (tuple): Batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)

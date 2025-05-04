@@ -3,6 +3,10 @@
 # Without merging WSI
 #
 # Aim is to calculate metrics as defined for the PanNuke dataset
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import argparse
@@ -154,21 +158,19 @@ class InferenceCellViT:
         self, model_type: str
     ) -> Union[
         CellViT,
+        CellViTUNIAdapter
     ]:
         """Return the trained model for inference
 
         Args:
             model_type (str): Name of the model. Must either be one of:
-                CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared
+                CellViT, CellViTUNIAdapter
 
         Returns:
-            Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]: Model
+            Union[CellViT, CellViTUNIAdapter]: Model
         """
         implemented_models = [
             "CellViT",
-            "CellViT256",
-            "CellViTSAM",
-            "CellViTUNI",
             "CellViTUNIAdapter"
         ]
         if model_type not in implemented_models:
@@ -189,35 +191,10 @@ class InferenceCellViT:
                 regression_loss=self.run_conf["model"].get("regression_loss", False),
             )
 
-        elif model_type in ["CellViT256"]:
-            model_class = CellViT256
-            model = model_class(
-                model256_path=None,
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-                regression_loss=self.run_conf["model"].get("regression_loss", False),
-            )
-        elif model_type in ["CellViTSAM"]:
-            model_class = CellViTSAM
-            model = model_class(
-                model_path=None,
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-                vit_structure=self.run_conf["model"]["backbone"],
-                regression_loss=self.run_conf["model"].get("regression_loss", False),
-            )
-        elif model_type == "CellViTUNI":
-            model_class = CellViTUNI
-            model = model_class(
-                num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
-            )
             
         if model_type == "CellViTUNIAdapter":
             model_class = CellViTUNIAdapter
             model = model_class(
-                        #img_size=224, patch_size=16, init_values=1e-5, dynamic_img_size=True, 
-                        #embed_dim=1024, depth=24, num_heads=16, num_classes=1,
                         num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
                         num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
                         drop_rate=0,
@@ -227,7 +204,7 @@ class InferenceCellViT:
                         # mlp_ratio=4,
                         drop_path_rate=0.4,
                         interaction_indexes=[[0, 5], [6, 11], [12, 17], [18, 23]],
-                        with_cffn=False,
+                        with_cffn=True,
                         cffn_ratio=0.25, 
                         deform_ratio=0.5, 
                         add_vit_feature=True)
@@ -239,6 +216,7 @@ class InferenceCellViT:
     ) -> tuple[
         Union[
             CellViT,
+            CellViTUNIAdapter
         ],
         DataLoader,
         dict,
@@ -249,8 +227,8 @@ class InferenceCellViT:
             test_folds (List[int], optional): Test fold to use. Otherwise defined folds from config.yaml (in run_dir) are loaded. Defaults to None.
 
         Returns:
-            tuple[Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared], DataLoader, dict]:
-                Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]: Best model loaded form checkpoint
+            tuple[Union[CellViT, CellViTUNIAdapter], DataLoader, dict]:
+                Union[CellViT, CellViTUNIAdapter]: Best model loaded form checkpoint
                 DataLoader: Inference DataLoader
                 dict: Dataset configuration. Keys are:
                     * "tissue_types": describing the present tissue types with corresponding integer
@@ -322,6 +300,7 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
+            CellViTUNIAdapter
         ],
         inference_dataloader: DataLoader,
         dataset_config: dict,
@@ -330,7 +309,7 @@ class InferenceCellViT:
         """Run Patch inference with given setup
 
         Args:
-            model (Union[CellViT, CellViTShared, CellViT256, CellViT256Shared, CellViTSAM, CellViTSAMShared]): Model to use for inference
+            model (Union[CellViT, CellViTUNIAdapter]): Model to use for inference
             inference_dataloader (DataLoader): Inference Dataloader. Must return a batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)
@@ -609,6 +588,7 @@ class InferenceCellViT:
         self,
         model: Union[
             CellViT,
+            CellViTUNIAdapter
         ],
         batch: tuple,
         generate_plots: bool = False,
@@ -616,7 +596,7 @@ class InferenceCellViT:
         """Inference step for a patch-wise batch
 
         Args:
-            model (CellViT): Model to use for inference
+            model (CellViT, CellViTUNIAdapter): Model to use for inference
             batch (tuple): Batch with the following structure:
                 * Images (torch.Tensor)
                 * Masks (dict)

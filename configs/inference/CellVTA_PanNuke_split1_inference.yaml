@@ -1,0 +1,61 @@
+logging:
+  level: info
+  log_comment: CellVTA_PanNuke_Split1
+random_seed: 19
+gpu: 0
+data:
+  dataset: Pannuke
+  dataset_path: "datasets/pannuke_cellvit"
+  test_folds:
+  - 2
+  num_nuclei_classes: 6
+  num_tissue_classes: 19
+  input_shape: 256
+training:
+  batch_size: 8
+model:
+  backbone: UNI_Adapter
+  path: "pretrained_models/cellvta/CellVTA_UNI_pannuke_split1.pth"  # path to checkpoint
+  embed_dim: 1024
+  depth: 24
+  num_heads: 16
+
+transformations:
+  normalize:
+    mean:
+    - 0.5
+    - 0.5
+    - 0.5
+    std:
+    - 0.5
+    - 0.5
+    - 0.5
+
+dataset_config:
+  tissue_types:
+    Adrenal_gland: 0
+    Bile-duct: 1
+    Bladder: 2
+    Breast: 3
+    Cervix: 4
+    Colon: 5
+    Esophagus: 6
+    HeadNeck: 7
+    Kidney: 8
+    Liver: 9
+    Lung: 10
+    Ovarian: 11
+    Pancreatic: 12
+    Prostate: 13
+    Skin: 14
+    Stomach: 15
+    Testis: 16
+    Thyroid: 17
+    Uterus: 18
+  nuclei_types:
+    Background: 0
+    Neoplastic: 1
+    Inflammatory: 2
+    Connective: 3
+    Dead: 4
+    Epithelial: 5

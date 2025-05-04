@@ -1,0 +1,138 @@
+# Example configuration for HoverNet-Cell-Segmentation
+
+# comment and project setup for wandb
+logging:
+  mode: offline                    # "online" or "offline" [str]
+  project: CellVTA_PanNuke_Split1                 # Name of project to use [str]
+  notes: CellVTA_PanNuke_Split1                   # Notes about the run, verbose description [str]
+  log_comment: CellVTA_PanNuke_Split1             # Comment to add to name the local logging folder [str]
+  tags:                     # List of tags, e.g., ["baseline", "run1"] [str]
+    - "tag1"
+    - "tag2"
+    - "..."
+  wandb_dir: "logs"               # Direcotry to store the wandb file. CAREFUL: Directory must exists [str]
+  log_dir: "logs"                 # Direcotry to store all logging related files and outputs [str]
+  level: "info"                   # Level of logging must be either ["critical", "error", "warning", "info", "debug"] [str]
+  log_images:               # If images should be logged to WandB for this run. [bool] [Optional, defaults to False]
+  group:                    # WandB group tag [str] [Optional, defaults to None]
+
+# seeding
+random_seed: 19             # Seed for numpy, pytorch etc. [int]
+
+# hardware
+gpu: 0                       # Number of GPU to run experiment on [int]
+
+# setting paths and dataset
+data:
+  dataset: Pannuke                 # Name of dataset, currently supported: PanNuke, Conic. Select your dataset and the script will autoamtically select the corresponding experiment [str]
+  dataset_path: "datasets/pannuke_cellvit"   # Path to dataset, compare ./docs/readmes/pannuke.md for further details [str]
+  train_folds: [0]        # List of fold Numbers to use for training [list[int]]
+  # val_split: 0.2               # Percentage of training set that should be used for validation. Either val_split or val_fold must be provided, not both. [float]
+  val_folds: [1]               # List of fold Numbers to use for validation [list[int]]
+  test_folds: [2]              # List of fold Numbers to use for final testing [list[int]]
+  num_nuclei_classes: 6      # Number of different nuclei classes (including background!, e.g. 5 nuclei classes + background = 6) [int]
+  num_tissue_classes: 19
+  input_shape: 256             # Input shape of data. [int] [Optional, defaults to 256]
+
+# model options
+model:
+  backbone: UNI_Adapter      # Backbone Type: Options are: default, ViT256, SAM-B, SAM-L, SAM-H, UNI
+  pretrained_encoder: "pretrained_models/vit_large_patch16_224.dinov2.uni_mass100k/pytorch_model.bin"      # Set path to a pretrained encoder [str]
+  pretrained:               # Path to a pretrained model (.pt file) [str, default None]
+  embed_dim: 1024               # Embedding dimension for ViT - typical values are 384 (ViT-S), 768 (ViT-B), 1024 (ViT-L), 1280 (ViT-H) [int]
+  input_channels:           # Number of input channels, usually 3 for RGB [int, default 3]
+  depth: 24                   # Number of Transformer Blocks to use - typical values are 12 (ViT-S), 12 (ViT-B), 24 (ViT-L), 32 (ViT-H) [int]
+  num_heads: 16               # Number of attention heads for MHA - typical values are 6 (ViT-S), 12 (ViT-B), 16 (ViT-L), 16 (ViT-H) [int]
+  extract_layers:           # List of layers to extract for skip connections - starting from 1 with a maximum value equals the depth [int]
+  shared_decoders:          # If decoder networks should be shared except for the heads. [bool] [Optional, defaults to False]
+  regression_loss:          # If regression loss should be used for binary prediction head. [bool] [Optional, defaults to False]
+
+# loss function settings (best shown by an example). See all implemented loss functions in base_ml.base_loss module
+loss:
+  nuclei_binary_map:
+    focaltverskyloss:
+      loss_fn: FocalTverskyLoss
+      weight: 1
+    dice:
+      loss_fn: dice_loss
+      weight: 1
+  hv_map:
+    mse:
+      loss_fn: mse_loss_maps
+      weight: 2.5
+    msge:
+      loss_fn: msge_loss_maps
+      weight: 8
+  nuclei_type_map:
+    bce:
+      loss_fn: xentropy_loss
+      weight: 0.5
+    dice:
+      loss_fn: dice_loss
+      weight: 0.2
+    mcfocaltverskyloss:
+      loss_fn: MCFocalTverskyLoss
+      weight: 0.5
+      args:
+        num_classes: 6
+  tissue_types:
+    ce:
+      loss_fn: CrossEntropyLoss
+      weight: 0.1
+training:
+  drop_rate: 0
+  attn_drop_rate: 0.1
+  drop_path_rate: 0.1
+  batch_size: 8
+  epochs: 100
+  optimizer: AdamW
+  early_stopping_patience: 100
+  scheduler:
+    scheduler_type: exponential
+    hyperparameters:
+      gamma: 0.85
+  optimizer_hyperparameter:
+    betas:
+    - 0.85
+    - 0.95
+    lr: 0.0003
+    weight_decay: 0.0001
+  unfreeze_epoch: 101
+  sampling_gamma: 0.85
+  sampling_strategy: cell+tissue
+
+
+# transformations, here all options are given. Remove transformations by removing them from this section
+transformations:
+  randomrotate90:           # RandomRotation90
+    p: 0.2                     # Probability [float, between 0 and 1]
+  horizontalflip:           # HorizontalFlip
+    p: 0.2                     # Probability [float, between 0 and 1]
+  verticalflip:             # VerticalFlip
+    p: 0.2                     # Probability [float, between 0 and 1]
+  # downscale:                # Downscaling
+  #   p: 0.2                     # Probability [float, between 0 and 1]
+  #   scale: 0.8                 # Scaling factor, maximum should be 0.5. Must be smaller than 1 [float, between 0 and 1]
+  blur:                     # Blur
+    p: 0.2                     # Probability [float, between 0 and 1]
+    blur_limit: 10            # Bluring limit, maximum should be 10, recommended 10 [float]
+  gaussnoise:               # GaussianNoise
+    p: 0.5                      # Probability [float, between 0 and 1]
+    var_limit: 10              # Variance limit, maxmimum should be 50, recommended 10 [float]
+  colorjitter:              # ColorJitter
+    p: 0.2                      # Probability [float, between 0 and 1]
+    scale_setting: 0.25         # Scaling for contrast and brightness, recommended 0.25 [float]
+    scale_color: 0.1           # Scaling for hue and saturation, recommended 0.1 [float]
+  superpixels:              # SuperPixels
+    p: 0.1                      # Probability [float, between 0 and 1]
+  zoomblur:                 # ZoomBlur
+    p: 0.1                     # Probability [float, between 0 and 1]
+  randomsizedcrop:          # RandomResizeCrop
+    p: 0.2                      # Probability [float, between 0 and 1]
+  elastictransform:         # ElasticTransform
+    p: 0.2                     # Probability [float, between 0 and 1]
+  normalize:                # Normalization
+    mean: [0.5,0.5,0.5]     # Mean for Normalizing, default to (0.5, 0.5, 0.5) [list[float], between 0 and 1 for each entry]
+    std: [0.5,0.5,0.5]      # STD for Normalizing, default to (0.5, 0.5, 0.5) [list[float], between 0 and 1 for each entry]
+
+eval_checkpoint: "model_best.pth"           # Either select "best_checkpoint.pth", "latest_checkpoint.pth" or one of the intermediate checkpoint names, e.g., "checkpoint_100.pth"

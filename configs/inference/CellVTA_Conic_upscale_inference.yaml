@@ -1,0 +1,28 @@
+logging:
+  level: info
+model:
+  path: "pretrained_models/cellvta/CellVTA_UNI_conic.pth" # path to checkpoint
+  
+data:
+  dataset: Conic
+  num_nuclei_classes: 7
+  num_tissue_classes: 1
+  dataset_path: datasets/conic_cellvit_patient
+  test_folds:
+  - 1
+  input_shape: 256
+  overlap: 32
+  with_padding: False
+training:
+  batch_size: 8
+  mixed_precision: null
+transformations:
+  normalize:
+    mean:
+    - 0.5
+    - 0.5
+    - 0.5
+    std:
+    - 0.5
+    - 0.5
+    - 0.5

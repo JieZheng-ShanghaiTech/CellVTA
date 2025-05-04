@@ -4,7 +4,10 @@
 # Adapted from HoverNet
 # HoverNet Network (https://doi.org/10.1016/j.media.2019.101563)
 # Code Snippet adapted from HoverNet implementation (https://github.com/vqdang/hover_net)
-
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import math

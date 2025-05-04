@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 # CellVit Experiment Class
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import copy
@@ -180,13 +184,6 @@ class ExperimentCellVitCoNic(BaseExperiment):
             train_transforms=train_transforms,
             val_transforms=val_transforms,
         )
-        
-        # torch.save(train_dataset.dataset.img_names, "conic40x_train_image_names.pt")
-        # torch.save(val_dataset.dataset.img_names, "conic40x_valid_image_names.pt")
-        
-        
-        # torch.save(train_dataset, "conic_40xlinear_train.pt")
-        # torch.save(val_dataset, "conic_40xlinear_valid.pt")
 
         # load sampler
         training_sampler = self.get_sampler(
@@ -572,23 +569,19 @@ class ExperimentCellVitCoNic(BaseExperiment):
         if backbone_type.lower() == "uni_adapter":
             model_class = CellViTUNIAdapter
             model = model_class(
-                        #img_size=224, patch_size=16, init_values=1e-5, dynamic_img_size=True, 
-                        #embed_dim=1024, depth=24, num_heads=16, num_classes=1,
                         num_nuclei_classes=self.run_conf["data"]["num_nuclei_classes"],
-                        num_tissue_classes=1,
+                        num_tissue_classes=self.run_conf["data"]["num_tissue_classes"],
                         drop_rate=0,
                         conv_inplane=64, 
                         n_points=4,
                         deform_num_heads=8, 
-                        # mlp_ratio=4,
                         drop_path_rate=0.4,
                         interaction_indexes=[[0, 5], [6, 11], [12, 17], [18, 23]],
-                        with_cffn=False,
+                        with_cffn=True,
                         cffn_ratio=0.25, 
                         deform_ratio=0.5, 
                         add_vit_feature=True)
             model.load_pretrained_encoder(pretrained_encoder)
-            
             
             
             if pretrained_model is not None:
@@ -607,9 +600,6 @@ class ExperimentCellVitCoNic(BaseExperiment):
             f"\n{summary(model, input_size=(1, 3, 256, 256), device='cuda:0')}"
         )
         
-        # print("****************************************")
-        # print(model.encoder.blocks[0].attn.qkv.weight)
-        # print("****************************************")
 
         return model
 

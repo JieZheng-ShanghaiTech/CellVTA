@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 # Base cell segmentation dataset, based on torch Dataset implementation
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import logging

@@ -4,7 +4,10 @@
 # Own defined loss functions:
 # xentropy_loss, dice_loss, mse_loss and msge_loss (https://github.com/vqdang/hover_net)
 # WeightedBaseLoss, MAEWeighted, MSEWeighted, BCEWeighted, CEWeighted (https://github.com/okunator/cellseg_models.pytorch)
-
+#
+# @ Fabian Hörst, fabian.hoerst@uk-essen.de
+# Institute for Artifical Intelligence in Medicine,
+# University Medicine Essen
 
 
 import torch
