@@ -1,5 +1,5 @@
 datasets/*
-!folder_name/README.md
+!datasets/README.md
 
 example/*
 !example/preprocessing_example.yaml
@@ -8,3 +8,6 @@ logs/*
 !logs/README.md
 
 **/__pycache__/
+
+*.bin
+nohup.out
