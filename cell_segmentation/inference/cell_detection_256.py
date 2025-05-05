@@ -923,7 +923,8 @@ class InferenceWSIParser:
         parser.add_argument(
             "--geojson",
             action="store_true",
-            help="Set this flag to export results as additional geojson files for loading them into Software like QuPath.",
+            help="Set this flag to export results as additional geojson files for loading them into Software like QuPath. Default: True",
+            default=True,
         )
 
         # subparsers for either loading a WSI or a WSI folder

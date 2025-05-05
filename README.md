@@ -53,6 +53,7 @@ If you meet any problem when installing Deformable Attention, please refer to th
 
 ## Preparation
 ### Data
+#### Datasets (PanNuke and CoNIC)
 Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link). Put them in `./datasets` and `unzip` them.
 
 `pannuke_cellvit.zip` is the dataset for the training and inference of PanNuke.
@@ -61,6 +62,8 @@ Download the preprocessed data from the `data` folder in  [CellVTA-Google-Drive]
 
 `conic_cellvit_patient.zip` is used for the inference of CoNIC.
 
+#### WSIs
+Place a WSI file in the `WSI` folder. Here is an [example TCGA file](https://portal.gdc.cancer.gov/files/f9147f06-2902-4a64-b293-5dbf9217c668). Please download and place this file in the `WSI` folder.
 
 ### Pretrained Models
 Pretrained CellVTA model checkpoints in the paper are publicly available. You can download them from the `checkpoints` folder in [CellVTA-Google-Drive](https://drive.google.com/drive/folders/1yH1p9YCyQl6Es2O88P6a-Fc7qN0mx0Uk?usp=drive_link) and put them in `./pretrained_models/cellvta`.
@@ -78,6 +81,7 @@ python cell_segmentation/run_cellvit.py --config [config-file-path]
 ```
 
 ### Inference
+#### Datasets (PanNuke and CoNIC)
 ```bash
 python cell_segmentation/inference/inference_cellvit_experiment_pannuke_from_checkpoint.py --config [config-file-path] --output_dir [dictionary-to-save-results] --gpu 0  
 ```
@@ -91,6 +95,27 @@ python cell_segmentation/inference/inference_cellvit_experiment_pannuke_from_che
 To reproduce the results on conic which needs upsamling inference, run `inference_cellvit_upscale.py` as below:
 ```bash
 python cell_segmentation/inference/inference_cellvit_upscale.py --config configs/inference/CellVTA_Conic_upscale_inference.yaml --output_dir logs/inference --gpu 0
+```
+
+#### WSIs
+1. Prepare WSI with our preprocessing pipeline
+```bash
+python preprocessing/patch_extraction/main_extraction.py --config [config-file-path]
+```
+
+Example: 
+```bash
+python preprocessing/patch_extraction/main_extraction.py --config WSI/preprocessing_example.yaml 
+```
+
+2. Run inference with the inference/cell_detection_256.py script
+```bash
+python cell_segmentation/inference/cell_detection_256.py --model [model-checkpoint-path] process_wsi --wsi_path [wsi-file-path] --patched_slide_path [preprocessed-wsi-folder-path]
+```
+
+Example: 
+```bash
+python cell_segmentation/inference/cell_detection_256.py --model ./pretrained_models/cellvta/CellVTA_UNI_pannuke_split1.pth process_wsi --wsi_path ./WSI/TCGA-V5-A7RE-11A-01-TS1.57401526-EF9E-49AC-8FF6-B4F9652311CE.svs  --patched_slide_path ./WSI/output/preprocessing/TCGA-V5-A7RE-11A-01-TS1.57401526-EF9E-49AC-8FF6-B4F9652311CE
 ```
 
 ## Acknowledgement

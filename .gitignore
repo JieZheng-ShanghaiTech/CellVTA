@@ -1,13 +1,11 @@
-datasets/*
-!datasets/README.md
-
-example/*
-!example/preprocessing_example.yaml
-
-logs/*
-!logs/README.md
-
 **/__pycache__/
+
+datasets/*
+logs/*
+WSI/*
 
 *.bin
 nohup.out
+
+!WSI/preprocessing_example.yaml
+!README.md
